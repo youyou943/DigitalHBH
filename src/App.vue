@@ -9,3 +9,13 @@ export default {
   name: 'App',
 }
 </script>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(243, 238, 220);
+  height: 100%;
+  min-height: 100%;
+}
+
+</style>
