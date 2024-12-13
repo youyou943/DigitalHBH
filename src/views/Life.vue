@@ -285,9 +285,9 @@ html, body {
   flex-direction: row;
   justify-content: flex-start; /* 向左对齐 */
   align-items: center; /* 可选：垂直居中对齐 */
-  width: 6500px;
+  width: 386%;
   height: 500px; /* 设置更大的高度 */
-  transform: translate(-14%, 90.4%);
+  transform: translate(-13.95%, 90.4%);
   padding:0px;
   
 }
