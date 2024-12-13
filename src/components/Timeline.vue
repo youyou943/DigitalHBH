@@ -50,19 +50,32 @@
       :key="year"
       :style="{ left: `${scale(year)}px`, position: 'absolute', bottom: '-18px', textAlign: 'center' }"
       class="year-div"
+      @click="yearClick(year, index)"
     >
-      <!--<div class="year-label">{{ `${year}年` }}</div>-->
-      <!-- 可选的额外内容 -->
       <div class="extra-div" style="background-color: rgba(0, 123, 255, 0.3); padding: 5px;">
         <p>{{ Ayears[index] }}</p>
       </div>
-    </div>
 
+        <!-- 圆形图标和年份文本 -->
+      <svg v-if="activeYears.includes(year)" :x="scale(year) - 15" :y="height-60" width="200" height="200" style="position: absolute;z-index:999;top:-70;left:-40" @click="openTotal(year)">
+        <!-- 圆形 -->
+        <circle cx="50" cy="50" r="40" fill="#F2E7D6"  stroke="black" stroke-width="1" />
+         <!-- 内圆形，添加内边框 -->
+        <circle cx="50" cy="50" r="35" fill="none" stroke="#8a8a8a" stroke-width="2" />
+        <!-- 文本 -->
+        <text x="50" y="55" text-anchor="middle" alignment-baseline="middle" font-size="25" fill="#9E5633">
+          {{ year-1865+1 }}岁
+        </text>
+      </svg>
+    
+    </div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
+import { ElDialog, ElButton } from 'element-plus';
+import 'element-plus/dist/index.css';
 
 export default {
   name: "Timeline",
@@ -73,7 +86,7 @@ export default {
     },
     endYear: {
       type: Number,
-      default: 1957, // 设置结束年份为 1955
+      default: 1955, // 设置结束年份为 1955
     },
     width: {
       type: Number,
@@ -180,14 +193,16 @@ export default {
   '新中国五年',
   '新中国六年',
   '新中国七年',
-],
- periods: [
-         { label: '同治', startYear: 1865, endYear: 1875 },
-  { label: '光绪', startYear: 1875, endYear: 1909 },
-  { label: '宣统', startYear: 1909, endYear: 1912 },
-  { label: '民国', startYear: 1912, endYear: 1949 },
-  { label: '新中国', startYear: 1949, endYear: 1956 }
+  '新中国八年',
       ],
+      periods: [
+         { label: '同治', startYear: 1865, endYear: 1875 },
+         { label: '光绪', startYear: 1875, endYear: 1909 },
+         { label: '宣统', startYear: 1909, endYear: 1912 },
+         { label: '民国', startYear: 1912, endYear: 1949 },
+         { label: '新中国', startYear: 1949, endYear: 1957 }
+        ],
+      activeYears: [],  // 存储已点击的年份
     };
   },
   mounted() {
@@ -195,6 +210,18 @@ export default {
     console.log("Scale after initialization: ", this.scale);  // 检查 scale 初始化情况
   },
   methods: {
+    yearClick(year) {
+      // 切换当前年份是否存在于activeYears数组中
+      if (this.activeYears.includes(year)) {
+        this.activeYears = this.activeYears.filter(y => y !== year);  // 如果已经显示则移除
+      } else {
+        this.activeYears.push(year);  // 否则添加
+      }
+    },
+    openTotal(year) {
+      console.log("打开");
+       this.$router.push({ name: 'life', query: { year: year } });
+    },
     drawTimeline() {
       // 创建比例尺
       const xScale = d3
@@ -207,7 +234,7 @@ export default {
       this.scale = xScale;
 
       // 生成年份数据
-      this.years = d3.range(this.startYear, this.endYear+1); // 包含开始和结束年份
+      this.years = d3.range(this.startYear, this.endYear); // 包含开始和结束年份
 
      
 
@@ -252,11 +279,12 @@ svg {
 
 .year-div {
   /*background-color: rgba(0, 123, 255, 0.3);*/
-  position: absolute;
+  /*position: absolute;*/
   bottom: 0px; /* 距离底部一定的间隔，确保 div 不会遮挡刻度 */
   width: 60px;
   text-align: center;
   font-size: 15px;
+  position: relative;
 }
 
 .year-label {
