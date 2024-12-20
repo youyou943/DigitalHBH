@@ -22,7 +22,7 @@ export default {
   position: absolute;
   top: 50px;
   left: 20px;
-  background-color: rgb(243,238,220);
+  background-color:  #E2DCCC;;
   padding: 10px;
   border-radius: 4px;
   z-index: 3;
@@ -46,11 +46,11 @@ export default {
 }
 
 .calligraphy {
-  background-color: rgb(255, 70, 131);
+  background-color: rgb(237, 195, 174);
 }
 
 .painting {
-  background-color: rgb(0, 123, 255);
+  background-color: rgb(143, 178, 201);
 }
 
 .legend-text {

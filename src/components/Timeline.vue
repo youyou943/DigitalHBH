@@ -23,7 +23,7 @@
             :width="scale(period.endYear) - scale(period.startYear)"
             :y="height-138"
             :height="80"
-            :fill="index % 2 === 0 ? 'rgba(0, 123, 255, 0.3)' : 'rgba(0, 255, 0, 0.3)'"
+            :fill="index % 2 === 0 ? 'rgba(170, 192, 196, 0.5)' : 'rgba(190, 192, 171, 0.6)'"
           />
           <text
             :x="scale(period.startYear) + (scale(period.endYear) - scale(period.startYear)) / 2"
@@ -52,7 +52,7 @@
       class="year-div"
       @click="yearClick(year, index)"
     >
-      <div class="extra-div" style="background-color: rgba(0, 123, 255, 0.3); padding: 5px;">
+      <div class="extra-div" style="background-color: rgba(175, 180, 173, 0.5); padding: 5px;">
         <p>{{ Ayears[index] }}</p>
       </div>
 
@@ -263,13 +263,13 @@ export default {
 
 <style >
 html, body {
-  background-color: rgb(243,238,220);  /* 设置整个页面背景颜色 */
+  background-color:#E2DCCC;  /* 设置整个页面背景颜色 */
   height: 100%;
   width:100%;
    margin: 0;    /* 移除默认的边距 */
 }
 .timeline-container {
-  background-color: rgb(243,238,220);
+  background-color:#E2DCCC;
   position: relative; /* 使得所有子元素基于此容器定位 */
 }
 
@@ -292,7 +292,7 @@ svg {
 }
 
 .extra-div {
-  background-color: rgba(0, 123, 255, 0.3); /* 设置额外内容背景颜色 */
+  background-color: #AFB4AD; /* 设置额外内容背景颜色 */
   border-radius: 3px;
   font-size: 20px; /* 可以设置适合的字体大小 */
   font-family: "隶书", "SimLi", "PMingLiU", "標楷體", sans-serif; /* 设置繁体字体 */

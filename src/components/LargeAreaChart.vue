@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" style="width:6550px; height:300px;z-index: 3;background-color:rgb(243,238,220);position: absolute;left:-120px;top:0px;"></div>
+  <div ref="chart" style="width:6550px; height:300px;z-index: 3;background-color:#E2DCCC;position: absolute;left:-120px;top:0px;"></div>
 </template>
 
 <script>
@@ -101,10 +101,10 @@ export default {
           interval:0
           },
           splitLine: {
-        show: true, // 显示分隔线
-        lineStyle: {
+        show: false, // 显示分隔线
+        /*lineStyle: {
           color: 'rgb(215,207,184)' // 修改条纹颜色为浅灰色
-        }
+        }*/
           },
           axisTick: {
       interval: 0, // 每个刻度都显示
@@ -126,58 +126,61 @@ export default {
         color: '#333' // 刻度文字颜色
           },
       splitLine: {
-        show: true, // 显示分隔线
+        show: false, // 显示分隔线
         lineStyle: {
           color: 'rgb(215,207,184)' // 修改条纹颜色为浅灰色
         }
       }
         },
-        series: [
-          {
-            name: '书法',
-            type: 'line',
-            symbol: 'none',
-            sampling: 'lttb',
-            itemStyle: {
-              color: 'rgb(161, 84, 131)'
-            },
-            areaStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgb(255, 158, 68)'
-                },
-                {
-                  offset: 1,
-                  color: 'rgb(255, 70, 131)'
-                }
-              ])
-            },
-            data: data1
-          },
-          {
-        name: '绘画',
-        type: 'line',
-        symbol: 'none',
-        sampling: 'lttb',
-        itemStyle: {
-          color: 'rgb(70, 130, 180)'
+       series: [
+  {
+    name: '书法',
+    type: 'line',
+    symbol: 'none',
+    sampling: 'lttb',
+    itemStyle: {
+      color: 'rgb(237, 195, 174)'  // 紫色调，和米色形成对比
+    },
+    areaStyle: {
+      /*color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        {
+          offset: 0,  // 渐变的起始颜色
+          color: 'rgb(218, 176, 159)'  // 浅米色
         },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: 'rgb(135, 206, 250)'
-            },
-            {
-              offset: 1,
-              color: 'rgb(70, 130, 180)'
-            }
-          ])
+        {
+          offset: 1,  // 渐变的结束颜色
+          color: 'rgb(186, 152, 126)'  // 深米色
+        }
+      ])*/
+     color: 'rgb(237, 195, 174)' 
+    },
+    data: data1
+  },
+  {
+    name: '绘画',
+    type: 'line',
+    symbol: 'none',
+    sampling: 'lttb',
+    itemStyle: {
+      color: 'rgb(143, 178, 201)'  // 蓝色调
+    },
+    areaStyle: {
+      /*color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        {
+          offset: 0,  // 渐变的起始颜色
+          color: 'rgb(173, 216, 230)'  // 浅蓝色
         },
-        data: data2
-      }
-        ]
+        {
+          offset: 1,  // 渐变的结束颜色
+          color: 'rgb(70, 130, 180)'  // 中蓝色
+        }
+      ])*/
+      color: 'rgb(143, 178, 201)' 
+    },
+    data: data2
+  }
+]
+
       };
 
       // 设置图表的选项

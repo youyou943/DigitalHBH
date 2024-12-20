@@ -15,7 +15,7 @@
       <!-- 图标“生” -->
       <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" style="position: absolute;z-index:3;top:350;left: 60px;">
           <!-- 圆形 -->
-          <circle cx="50" cy="50" r="22" fill="#E4DDC3" />
+          <circle cx="50" cy="50" r="22" fill="#CEC8B8" />
           <!-- 文字 -->
           <text x="50" y="55" text-anchor="middle" fill="#8a8a8a" font-size="16" font-family="Arial" font-weight="bold">
             生
@@ -25,7 +25,7 @@
      <!-- 图标“卒” -->
       <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" style="position: absolute;z-index:3;top:350;left: 6280px;">
           <!-- 圆形 -->
-          <circle cx="50" cy="50" r="22" fill="#E4DDC3" />
+          <circle cx="50" cy="50" r="22" fill="#CEC8B8" />
           <!-- 文字 -->
           <text x="50" y="55" text-anchor="middle" fill="#8a8a8a" font-size="16" font-family="Arial" font-weight="bold">
             卒
@@ -252,7 +252,7 @@ export default {
 <style >
 
 html, body {
-  background-color: rgb(243,238,220);  /* 设置整个页面背景颜色 */
+  background-color: #E2DCCC;  /* 设置整个页面背景颜色 */
   height: 100%;
   width:100%;
    margin: 0;    /* 移除默认的边距 */
@@ -277,7 +277,7 @@ html, body {
    height: 1000px; /* 设置更大的高度 */
   transform: translate(-13.95%, -24%);
   flex-direction: row;
-  background-color: rgb(243,238,220); 
+  background-color: #E2DCCC; 
 }
 .container2 {
   position: absolute;
@@ -307,7 +307,7 @@ html, body {
 
 .header{
   width: 156px;
-  background-color:rgb(228, 221, 195);
+  background-color:#D8D2C2;
   text-align: center;
   font-size: 38px; 
   font-family: "KaiTi", "楷体", serif; /* 设置为楷书字体 */
@@ -319,7 +319,7 @@ html, body {
 
 .header2{
   width: 156px;
-  background-color:rgb(201, 202, 210);
+  background-color:#A5AAA3;
   text-align: center;
   font-size: 38px; 
   font-family: "KaiTi", "楷体", serif; /* 设置为楷书字体 */
@@ -329,14 +329,14 @@ html, body {
   margin-top: 80px;
 }
 .subheader{
-background-color:rgb(228, 221, 195);
+background-color:#D8D2C2;
 font-size: 30px;
 font-family: "KaiTi", "楷体", serif; 
 text-align: center;
  writing-mode: vertical-rl;
 }
 .subheader2{
-background-color:rgb(201, 202, 210);
+background-color:#A5AAA3;
 font-size: 30px;
 font-family: "KaiTi", "楷体", serif; 
 text-align: center;
@@ -344,7 +344,7 @@ text-align: center;
 }
 .section {
   width: 100%;
-  background-color:rgb(243,238,220);
+  background-color: #E2DCCC;
   text-align: center;
   padding:0;
   margin-bottom: 10px;
@@ -352,7 +352,7 @@ text-align: center;
 }
 .section2 {
   width: 100%;
-  background-color:rgb(207,207,213);
+  background-color:#C3B59B;
   text-align: center;
   padding:0;
   margin-bottom: 10px;
@@ -369,7 +369,7 @@ text-align: center;
   gap: 0; /* 确保列之间没有间隙 */
 }
 .grid-item {
-  background-color:rgb(243,238,220);
+  background-color: #E2DCCC;
   padding: 10px;
   text-align: center;
   writing-mode: vertical-rl; /* 设置文字竖排 */
@@ -378,7 +378,7 @@ text-align: center;
   font-weight: bold;
 }
 .special-style {
-  background-color:rgb(201,80,44);
+  background-color:#DAB09F;
   padding: 10px;
   text-align: center;
   writing-mode: vertical-rl; /* 设置文字竖排 */
@@ -386,11 +386,12 @@ text-align: center;
   font-family: "KaiTi", "楷体", serif; 
   color: white;
   font-weight: bold;
-   border: 2px solid #333; /* 添加边框 */
+   /*border: 2px solid #333;*/
   border-radius: 5px; /* 设置圆角，如果需要方角可以删除此行 */
+   margin:2px; 
 }
 .grid-item2 {
-  background-color:rgb(207,207,213);
+  background-color:#AFB4AD;
   padding: 10px;
   text-align: center;
   writing-mode: vertical-rl; /* 设置文字竖排 */
