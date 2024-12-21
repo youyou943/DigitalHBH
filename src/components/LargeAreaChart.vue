@@ -11,21 +11,31 @@ export default {
   name: 'LargeAreaChart',
   data() {
     return {
-      data1: [],
-      data2:[],
+      data1: [],//存储书法数量
+      data2: [],//存储绘画数量
+      date:[],
     }
   },
-  mounted() {
-    this.initChart();
-    this.fetchData();
-    
-  },
+  async mounted() {
+  // 确保在组件渲染完后再初始化图表
+  await this.fetchData();
+  this.initChart();
+},
+
   methods: {
-    fetchData() {
-      axios.get('http://127.0.0.1:4523/m2/5614391-5293614-default/244359091')
+    //获取各年创作数量
+    async fetchData() {
+      await axios.get('http://127.0.0.1:4523/m2/5614391-5293614-default/244359091')
         .then(response => {    
-          console.log(response);
-            
+          const result = response.data.data;
+          console.log("获取各年创作数量",result);
+          if (response.status===200) {
+            this.data1 = result.map(item => item.calligraphy);
+            console.log("data1",this.data1);
+            this.data2 = result.map(item => item.paintings);
+            console.log("data2", this.data2);
+            this.date = result.map(item => item.year);
+          }
          
         })
         .catch(error => {
@@ -33,13 +43,13 @@ export default {
         });
     },
  
-    initChart() {
+    async initChart() {
       // 获取图表的 DOM 元素
       const chartDom = this.$refs.chart;
       // 初始化 ECharts 实例
       const myChart = echarts.init(chartDom);
 
-      // 配置图表选项
+      /*// 配置图表选项
       let base = +new Date(1865, 0, 1);
       const end = +new Date(1956, 11, 31); // 1955年12月31日
       const oneDay = 24 * 3600 * 1000;
@@ -61,7 +71,7 @@ export default {
     data1.push(Math.random() * 20);
     data2.push(Math.random() * 20);
     base += oneDay; // 时间增加一天
-  }
+  }*/
 
       const option = {
         tooltip: {
@@ -88,7 +98,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: date,
+          data: this.date,
           axisLine: {
              lineStyle: {
               color: '#333', // 轴的颜色
@@ -154,7 +164,7 @@ export default {
       ])*/
      color: 'rgb(237, 195, 174)' 
     },
-    data: data1
+    data:this.data1
   },
   {
     name: '绘画',
@@ -177,7 +187,7 @@ export default {
       ])*/
       color: 'rgb(143, 178, 201)' 
     },
-    data: data2
+    data: this.data2
   }
 ]
 
