@@ -25,7 +25,9 @@ export default {
   methods: {
     //获取各年创作数量
     async fetchData() {
-      await axios.get('http://127.0.0.1:4523/m2/5614391-5293614-default/244359091')
+      //TODO:api/v1/life/counts
+    //await axios.get(`${API_BASE_URL}/m2/5614391-5293614-default/244359091`)
+      await axios.get(`${API_BASE_URL}/api/v1/life/counts`)
         .then(response => {    
           const result = response.data.data;
           console.log("获取各年创作数量",result);

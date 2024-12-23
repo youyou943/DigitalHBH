@@ -52,8 +52,10 @@
       class="year-div"
       @click="yearClick(year, index)"
     >
-      <div class="extra-div" style="background-color: rgba(175, 180, 173, 0.5); padding: 5px;">
+      <div class="grid">
+        <div class="extra-div" style="background-color: rgba(175, 180, 173, 0.5);padding-right:9px;padding-top: 5px; ">
         <p>{{ Ayears[index] }}</p>
+      </div>
       </div>
 
         <!-- 圆形图标和年份文本 -->
@@ -220,6 +222,7 @@ export default {
     },
     openTotal(year) {
       console.log("打开");
+      document.body.style.overflow = 'auto';
        this.$router.push({ name: 'life', query: { year: year } });
     },
     drawTimeline() {
@@ -299,9 +302,13 @@ svg {
   font-weight: bold; /* 设置字体加粗 */
   margin: 0; /* 去除间距 */
    padding: 0; /* 去除内边距左右，只保留上下间距 */
-   width: 100%; /* 确保宽度填充 */
-   display: flex; /* 确保它们紧密排列 */
-    height: 75px; /* 设置固定高度 */
+  width: 60px; /* 确保宽度填充 */
+   display: grid; /* 确保它们紧密排列 */
+  height: 75px; /* 设置固定高度 */
 }
-
+.grid{
+  display: grid;
+  grid-template-columns: repeat(91, auto); /* 根据需要调整列数 */
+  gap: 0; /* 确保列之间没有间隙 */
+}
 </style>
