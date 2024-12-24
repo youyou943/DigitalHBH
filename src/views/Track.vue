@@ -1,5 +1,56 @@
 <template>
   <div class="map-container">
+    <!-- 欢迎提示框 -->
+    <el-dialog
+      v-model="showWelcome"
+      title="艺术之旅"
+      width="35%"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      class="ancient-dialog"
+    >
+      <div class="welcome-content">
+        <div class="content-wrapper">
+          <div class="title-decoration">
+            <span class="decoration">※</span>
+            <span>序</span>
+            <span class="decoration">※</span>
+          </div>
+          <div class="scroll-content">
+            <p>"博览群书，游历四方"；"师法自然，心绘山川"，黄宾虹一生的艺术追求都深深植根于这一理念。他广泛涉猎古今书籍，汲取知识精华，同时不遗余力地踏遍祖国的名山大川，于自然中寻找灵感，创作出一幅幅充满生命力的画作。</p>
+            <p>黄宾虹以其独特的笔墨语言，将传统与现代、东方与西方的艺术元素巧妙融合，形成了独树一帜的山水画风格，对后世产生了深远的影响。</p>
+            <p>让我们搭乘黄宾虹的艺术之舟，一同探索他那充满哲思与自然之美的艺术旅程吧！</p>
+          </div>
+          <div class="seal">游历</div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <!-- 右侧工具栏 -->
+    <div class="toolbar">
+      <div class="toolbar-item">
+        <el-button 
+          type="primary" 
+          circle
+          @click="handlePlay"
+        >
+          <el-icon><VideoPlay v-if="!isPlaying" /><VideoPause v-else /></el-icon>
+        </el-button>
+        <span class="toolbar-text">{{ isPlaying ? '暂停' : '播放' }}</span>
+      </div>
+      <div class="toolbar-item">
+        <el-button 
+          type="warning" 
+          circle
+          @click="handleReset"
+        >
+          <el-icon><RefreshRight /></el-icon>
+        </el-button>
+        <span class="toolbar-text">重置</span>
+      </div>
+    </div>
+
     <!-- 左侧滑动窗口 -->
     <transition name="slide">
       <div v-if="showSidePanel" class="side-panel">
@@ -46,7 +97,7 @@
     <!-- 详情对话框 -->
     <el-dialog 
       v-model="dialogVisible"
-      title="地点详情" 
+      title="作品详情" 
       width="40%"
     >
       <div v-if="placeDetails">
@@ -61,9 +112,9 @@
       <div v-else>
         <p>加载详情失败，请稍后再试。</p>
       </div>
-      <template #footer>
+      <!-- <template #footer>
         <el-button @click="dialogVisible = false">关闭</el-button>
-      </template>
+      </template> -->
     </el-dialog>
   </div>
 </template>
@@ -71,6 +122,7 @@
 <script>
 import { ref } from 'vue'
 import { ElMessage, ElTooltip, ElButton, ElDialog } from 'element-plus'
+import { VideoPlay, VideoPause, RefreshRight } from '@element-plus/icons-vue'
 
 // 地点数据
 export const places = [
@@ -93,7 +145,7 @@ const routePlaceDetails = {
     data: {
       year: "1865-1875",
       month: "",
-      reference: "公1865年清穆宗  同治四年  乙丑  二岁 1月27日，阴历甲子、乙丑之交正月元旦子时，生于浙江金华县城西之铁岭头，距立春尚有十余日，循旧俗，堕地即为二岁。初名懋质，一名元吉，后改名质，字朴存，亦作朴丞、朴人，初号滨虹，民国丁戊间，改字宾虹遂以字行。时祖父德涵卒十九年。祖母潘氏卒三年。父定华年三十五岁。生母方氏年二十三岁。",
+      reference: "公1865年清穆宗  同治四年  乙丑  二岁 1月27日，阴历甲子、乙丑之交正月元旦子时，生于浙江金华县城西之铁岭头，距立春尚有十余日，循旧俗，堕地即为二岁。初名懋质，一名元吉，后改名质，字朴存，亦作朴丞、朴人，初号滨虹，民国丁戊间，改字宾虹遂以字行。时祖父德涵卒十九年。祖母潘氏卒三年。父定华年三五岁。母方氏年二十三岁。",
       work: "",
       workname: "读《画征录》"
     }
@@ -153,7 +205,7 @@ const routePlaceDetails = {
     data: {
       year: "1899",
       month: "五月",
-      reference: "公元1899年 清德宗光绪二十五年 己亥 三十六岁 在歙县许宅授课。夏日，为辉庭写山水纨扇。仲秋，为父母官筱印作《黄白山黄山诗意图》。",
+      reference: "公元1899年 清德宗光绪二十五年 己亥 三十六岁 在歙县许宅授课。夏日，为��庭写山水纨扇。仲秋，为父母官筱印作《黄白山黄山诗意图》。",
       work: "https://ts1.cn.mm.bing.net/th/id/R-C.83600e2cec52c2f0e66a7f5bc052276e?rik=esm7JmzM523uTQ&riu=http%3a%2f%2f3img.zhuokearts.com%2fauction.pics%2f2013%2f12%2f16%2fzc-10740-338.jpg&ehk=vtgJ3sTMGwBdOJWPTyiKegwnrxE4vLse%2b9bgAU3CBU8%3d&risl=&pid=ImgRaw&r=0",
       workname: "黄白山黄山诗意图"
     }
@@ -173,7 +225,7 @@ const routePlaceDetails = {
     data: {
       year: "1937-1948",
       month: "十二月",
-      reference: "南京文物库房竣工，上海故宫南迁文物于1936年12月4日及17日分两批运宁，随之暂居南京继续鉴定。",
+      reference: "南京文物库房竣工，上海故宫南迁文物于1936年12月4日及17日��两批运宁，随之暂居南京继续鉴定。",
       work: "https://www.namoc.org/zgmsg/zgh/201304/fb84eb6f5e244302aee5a7f07cfe4db8/images/200705_hbh_lbctt.jpg",
       workname: "作《练滨草堂图》"
     }
@@ -196,6 +248,9 @@ export default {
     ElTooltip,
     ElButton,
     ElDialog,
+    VideoPlay,
+    VideoPause,
+    RefreshRight,
   },
   data() {
     return {
@@ -211,12 +266,15 @@ export default {
       placeDetails: null, // 存储当前地点的详细信息
       showSidePanel: false,
       currentPlace: null,
+      animationInterval: null,
+      isPlaying: true,
+      showWelcome: true,
     };
   },
   methods: {
     // 定时更新人物的位置
     moveAvatar() {
-      setInterval(() => {
+      this.animationInterval = setInterval(() => {
         if (this.currentOrder < this.places.length) {
           // 关闭当前面板
           this.showSidePanel = false;
@@ -231,10 +289,17 @@ export default {
               this.currentPlace = place;
               this.loadPlaceDetails(place.place, place.order);
               this.showSidePanel = true;
-            }, 500); // 等待移动动画完成显示
+            }, 500); // 等待移动动画完成后显示
             
             this.currentOrder += 1;
-          }, 300); // 给一点时间让面板关闭
+          }, 300);
+        } else {
+          // 播放结束，隐藏面板
+          this.showSidePanel = false;
+          // 清除定时器
+          clearInterval(this.animationInterval);
+          this.animationInterval = null;
+          this.isPlaying = false;
         }
       }, 5000);
     },
@@ -264,9 +329,58 @@ export default {
         this.placeDetails = placeDetails.data;
       }
     },
+    handlePlay() {
+      if (this.isPlaying) {
+        // 暂停
+        if (this.animationInterval) {
+          clearInterval(this.animationInterval);
+          this.animationInterval = null;
+        }
+      } else {
+        // 播放
+        this.moveAvatar();
+      }
+      this.isPlaying = !this.isPlaying;
+    },
+    handleReset() {
+      // 清除现有定时器
+      if (this.animationInterval) {
+        clearInterval(this.animationInterval);
+      }
+      // 重置状态
+      this.currentOrder = 0;
+      this.showSidePanel = false;
+      // 重置人物位置
+      this.startPointStyle = {
+        position: 'absolute',
+        top: `${places[0].position.y}%`,
+        left: `${places[0].position.x}%`,
+        transition: 'top 2s, left 2s',
+      };
+      // 重新开始动画
+      setTimeout(() => {
+        this.moveAvatar();
+        this.isPlaying = true;
+        // 显示第一个地点的面板
+        setTimeout(() => {
+          this.currentPlace = places[0];
+          this.loadPlaceDetails(places[0].place, places[0].order);
+          this.showSidePanel = true;
+        }, 500);
+      }, 100);
+    },
   },
   mounted() {
-    this.moveAvatar();  // 页面加载后开始移动
+    // 4秒后自动关闭欢迎提示
+    setTimeout(() => {
+      this.showWelcome = false;
+    }, 4000);
+    this.moveAvatar();
+  },
+  beforeUnmount() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+    }
   },
 };
 </script>
@@ -274,26 +388,27 @@ export default {
 <style scoped>
 .map-container {
   position: relative;
-  width: 90%;
-  height: 95vh; /* 增加容器高度，占据更多视口空�� */
+  width: 110%;
+  height: 98vh;
   background-color: #f0f0f0;
-  margin: 1px auto; /* 减小上下边距，给图片更多空间 */
+  margin: 1vh -3.5%;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px; /* 添加内边距，防止图片贴边 */
+  padding: 2px;
 }
 
 .map-img {
   max-width: 100%;
   max-height: 100%;
   width: auto;
-  height: 100vh; /* 设置一个固定的高度值，确保图片足够大 */
+  height: 97vh; /* 增加图片高度 */
   object-fit: contain;
   display: block;
+  margin: auto;
 }
 
 /* 起始点的定位样式 */
@@ -320,7 +435,7 @@ export default {
   cursor: pointer;
 }
 
-/* 地点标记图标的样式 */
+/* 地点标记标的样式 */
 .place-icon {
   width: 30px;  /* 你可以根据需要调整图片大小 */
   height: 30px;
@@ -442,5 +557,156 @@ export default {
 
 .side-panel::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+/* 右侧工具栏样式 */
+.toolbar {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.toolbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-text {
+  font-size: 12px;
+  color: #606266;
+}
+
+.toolbar :deep(.el-button) {
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s ease;
+}
+
+.toolbar :deep(.el-button:hover) {
+  transform: scale(1.1);
+}
+
+.toolbar :deep(.el-icon) {
+  font-size: 20px;
+}
+
+/* 欢迎提示框样式 */
+.ancient-dialog :deep(.el-dialog) {
+  background: url('/ture.jpg') repeat;
+  border: 12px solid #8b4513;
+  border-image: url('/border.png') 30 30 stretch;
+  border-radius: 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  max-height: 80vh;
+}
+
+.ancient-dialog :deep(.el-dialog__header) {
+  background-color: rgba(139, 69, 19, 0.9);
+  padding: 15px 20px;
+  margin: 0;
+  border-bottom: 2px solid rgba(244, 228, 188, 0.3);
+}
+
+.ancient-dialog :deep(.el-dialog__title) {
+  color: #f4e4bc;
+  font-size: 22px;
+  font-family: "楷体", "STKaiti", serif;
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+.welcome-content {
+  padding: 20px;
+  font-family: "楷体", "STKaiti", serif;
+}
+
+.content-wrapper {
+  position: relative;
+  padding: 20px 40px;
+  border: 2px solid rgba(139, 69, 19, 0.2);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 0 10px rgba(139, 69, 19, 0.1);
+}
+
+.title-decoration {
+  text-align: center;
+  color: #8b4513;
+  font-size: 20px;
+  margin-bottom: 30px;
+  letter-spacing: 12px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.decoration {
+  color: #b92525;
+  font-size: 16px;
+}
+
+.scroll-content {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+.welcome-content p {
+  margin-bottom: 20px;
+  line-height: 2;
+  text-align: justify;
+  color: #4a4a4a;
+  font-size: 16px;
+  text-indent: 2em;
+}
+
+.seal {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  width: 60px;
+  height: 60px;
+  background-color: #b92525;
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transform: rotate(15deg);
+  opacity: 0.8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  writing-mode: vertical-rl;
+  letter-spacing: 4px;
+}
+
+/* 自定义滚动条样式 */
+.scroll-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-content::-webkit-scrollbar-track {
+  background: rgba(139, 69, 19, 0.1);
+}
+
+.scroll-content::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.3);
+  border-radius: 3px;
+}
+
+.scroll-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.5);
 }
 </style>
