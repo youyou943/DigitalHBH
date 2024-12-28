@@ -127,6 +127,7 @@ export default {
         yAxis: {
           type: 'value',
           boundaryGap: [0, '100%'],
+           max:40, 
            axisLine: {
         lineStyle: {
           color: '#333', // 轴的颜色

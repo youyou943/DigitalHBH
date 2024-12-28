@@ -46,9 +46,6 @@
           <rect x="10" y="10" rx="80" ry="40" width="100" height="120" />
           </clipPath>
       </svg>
-
-
-
     <div class="timeline-flex-container">
     <Timeline :startYear="1865" :endYear="1957" :width="6500" :height="300" />
     </div>
@@ -59,14 +56,14 @@
     <div class="grid">
       <div class="subheader">史事</div>
        <div v-for="(item, index) in showNewContainer ? items2 : items" :key="index" 
-       :class="['grid-item', { 'special-style': showNewContainer && checkItem(item)}]" 
-       @click="handleClick(item)">
-    {{ item }}
+       :class="['grid-item', { 'special-style': showNewContainer && checkItem(item.event)}]" 
+       @click="handleClick(item,index)">
+    {{ item.event}}
      </div>
     </div>
     <div class="grid">
       <div class="subheader">艺术</div>
-      <div v-for="(item, index) in items" :key="index" class="grid-item" @click="handleClick(item)">{{ item }}</div>
+      <div v-for="(item, index) in items3" :key="index" class="grid-item" @click="handleClick2(item,index)">{{ item.event }}</div>
     </div>
     </div>
     
@@ -77,11 +74,11 @@
     <div class="section2">
     <div class="grid2">
       <div class="subheader2">史事</div>
-      <div v-for="(item, index) in items" :key="index" class="grid-item2" @click="handleClick(item)">{{ item }}</div>
+      <div v-for="(item, index) in itemsEurHis" :key="index" class="grid-item2" @click="handleClick3(item,index)">{{item }}</div>
     </div>
     <div class="grid2">
       <div class="subheader2">艺术</div>
-      <div v-for="(item, index) in items" :key="index" class="grid-item2" @click="handleClick(item)">{{ item }}</div>
+      <div v-for="(item, index) in itemsEurArt" :key="index" class="grid-item2" @click="handleClick3(item,index)">{{ item }}</div>
     </div>
     </div>   
   </div>
@@ -93,21 +90,21 @@
       :fullscreen="false"
       :center="true"
       :before-close="handleClose"
-      style="z-index: 9999;background-color: rgb(243,238,220);top: 0; margin-top: 0;"
+      style="z-index: 9999;background-color: rgb(243,238,220);top: 0; margin-top:50px;"
       
     >
       <div class="dialog-content2">
-        <p>胡宗宪（1512-1565），字汝贞，号默林，直隶绩溪县（今安徽）人。明朝政治、军事人物。任浙江巡按御史期间多次攻击东南沿海倭寇。后因严嵩事牵连下狱自尽。
+        <!--<p>胡宗宪（1512-1565），字汝贞，号默林，直隶绩溪县（今安徽）人。明朝政治、军事人物。任浙江巡按御史期间多次攻击东南沿海倭寇。后因严嵩事牵连下狱自尽。
           
           王直（？-1559）是明代著名的武装海商集团（倭寇）首领；生于南直隶徽州歙县。1557年被胡宗宪诱降，1559年被明廷斩杀。
-        </p>
+        </p>-->
         <p v-html="eventDataother.event"></p>
         <p>&nbsp;</p>
-        <p style="text-align: center;">
-          <img src="../static/avatar.png" alt="" width="500" height="465">
-          <img :src="eventDataother.work" alt="" width="500" height="465">
+        <p style="text-align: center;" v-if="isImageLoaded">
+         <!-- <img src="../static/avatar.png" alt="" width="500" height="465">-->
+          <img :src="eventDataother.work" alt="" width="500" height="465" @error="handleImageError">
         </p>
-        <p style="text-align: center;">《多宝塔碑》明拓本（局部），原碑现藏西安碑林</p>
+        <!--<p style="text-align: center;">《多宝塔碑》明拓本（局部），原碑现藏西安碑林</p>-->
         <p style="text-align: center;">{{ eventDataother.workname }}</p>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">关闭</el-button>
@@ -130,7 +127,7 @@
         <p v-if="eventDatayear.painting">
            <svg t="1734953412760" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10282" width="48" height="48"><path d="M263.314286 175.542857h497.371428v682.666667H263.314286z" fill="#F2EBD2" p-id="10283" v-if="eventDatayear.painting"></path><path d="M277.942857 687.542857l150.186667-131.169524c24.868571-21.942857 62.902857-19.504762 85.333333 4.876191L575.390476 629.028571l20.48-15.603809c24.380952-19.017143 59.489524-16.579048 80.944762 5.851428l73.630476 75.580953V843.580952H273.066667l4.87619-156.038095z" fill="#FFC800" p-id="10284" data-spm-anchor-id="a313x.search_index.0.i8.34503a81XvIFXI" class="selected"></path><path d="M760.685714 882.590476H263.314286c-13.653333 0-24.380952-10.727619-24.380953-24.380952V256c0-13.653333 10.727619-24.380952 24.380953-24.380952s24.380952 10.727619 24.380952 24.380952V833.828571h448.609524V199.92381H263.314286c-13.653333 0-24.380952-10.727619-24.380953-24.380953s10.727619-24.380952 24.380953-24.380952h497.371428c13.653333 0 24.380952 10.727619 24.380953 24.380952v682.666667c0 13.653333-10.727619 24.380952-24.380953 24.380952z" fill="#2F57B2" p-id="10285"></path><path d="M270.628571 63.390476h482.742858c31.207619 0 56.07619 24.868571 56.07619 56.076191S784.579048 175.542857 753.371429 175.542857h-482.742858C239.420952 175.542857 214.552381 150.674286 214.552381 119.466667S239.420952 63.390476 270.628571 63.390476z" fill="#02C3F7" p-id="10286"></path><path d="M753.371429 199.92381h-482.742858C226.255238 199.92381 190.171429 163.84 190.171429 119.466667S226.255238 39.009524 270.628571 39.009524h482.742858c44.373333 0 80.457143 36.08381 80.457142 80.457143S797.744762 199.92381 753.371429 199.92381z m-482.742858-112.152381c-17.554286 0-31.695238 14.140952-31.695238 31.695238s14.140952 31.695238 31.695238 31.695238h482.742858c17.554286 0 31.695238-14.140952 31.695238-31.695238s-14.140952-31.695238-31.695238-31.695238h-482.742858z" fill="#2F57B2" p-id="10287"></path><path d="M753.371429 63.390476c31.207619 0 56.07619 24.868571 56.07619 56.076191S784.579048 175.542857 753.371429 175.542857 697.295238 150.674286 697.295238 119.466667 722.16381 63.390476 753.371429 63.390476z" fill="#FFC800" p-id="10288"></path><path d="M753.371429 199.92381c-44.373333 0-80.457143-36.08381-80.457143-80.457143S708.998095 39.009524 753.371429 39.009524 833.828571 75.093333 833.828571 119.466667 797.744762 199.92381 753.371429 199.92381z m0-112.152381c-17.554286 0-31.695238 14.140952-31.695239 31.695238s14.140952 31.695238 31.695239 31.695238 31.695238-14.140952 31.695238-31.695238-14.140952-31.695238-31.695238-31.695238z" fill="#2F57B2" p-id="10289"></path><path d="M270.628571 848.457143h482.742858c31.207619 0 56.07619 24.868571 56.07619 56.07619s-24.868571 56.07619-56.07619 56.076191h-482.742858c-31.207619 0-56.07619-24.868571-56.07619-56.076191S239.420952 848.457143 270.628571 848.457143z" fill="#02C3F7" p-id="10290"></path><path d="M753.371429 984.990476h-482.742858c-44.373333 0-80.457143-36.08381-80.457142-80.457143S226.255238 824.07619 270.628571 824.07619h482.742858c44.373333 0 80.457143 36.08381 80.457142 80.457143s-36.08381 80.457143-80.457142 80.457143z m-482.742858-112.152381c-17.554286 0-31.695238 14.140952-31.695238 31.695238s14.140952 31.695238 31.695238 31.695238h482.742858c17.554286 0 31.695238-14.140952 31.695238-31.695238s-14.140952-31.695238-31.695238-31.695238h-482.742858z" fill="#2F57B2" p-id="10291" data-spm-anchor-id="a313x.search_index.0.i9.34503a81XvIFXI" class="selected"></path><path d="M753.371429 848.457143c31.207619 0 56.07619 24.868571 56.07619 56.07619s-24.868571 56.07619-56.07619 56.076191-56.07619-24.868571-56.076191-56.076191 24.868571-56.07619 56.076191-56.07619z" fill="#FFC800" p-id="10292"></path><path d="M753.371429 984.990476c-44.373333 0-80.457143-36.08381-80.457143-80.457143s36.08381-80.457143 80.457143-80.457143 80.457143 36.08381 80.457142 80.457143-36.08381 80.457143-80.457142 80.457143z m0-112.152381c-17.554286 0-31.695238 14.140952-31.695239 31.695238s14.140952 31.695238 31.695239 31.695238 31.695238-14.140952 31.695238-31.695238-14.140952-31.695238-31.695238-31.695238z" fill="#2F57B2" p-id="10293"></path><path d="M750.445714 719.238095c-6.339048 0-12.678095-2.438095-17.554285-7.314285l-73.630477-75.580953c-13.165714-13.165714-34.133333-15.11619-48.761904-3.413333L590.019048 648.533333c-10.24 7.801905-24.380952 6.339048-32.670477-2.925714l-61.927619-67.779048c-13.653333-14.628571-36.571429-16.091429-51.2-2.925714l-150.186666 131.169524c-10.24 8.777143-25.35619 7.801905-34.620953-2.438095-8.777143-10.24-7.801905-25.35619 2.438096-34.620953l150.186666-131.169523c34.620952-30.232381 88.259048-27.306667 119.466667 6.826666l46.811428 51.2 2.438096-1.950476c34.620952-26.331429 83.382857-22.918095 113.615238 8.289524l73.630476 75.580952c9.264762 9.752381 9.264762 24.868571-0.487619 34.620953-4.87619 4.87619-11.215238 6.826667-17.066667 6.826666z" fill="#2F57B2" p-id="10294"></path><path d="M604.647619 346.209524m-63.390476 0a63.390476 63.390476 0 1 0 126.780952 0 63.390476 63.390476 0 1 0-126.780952 0Z" fill="#F26871" p-id="10295"></path><path d="M604.647619 433.980952c-48.274286 0-87.771429-39.497143-87.771429-87.771428s39.497143-87.771429 87.771429-87.771429 87.771429 39.497143 87.771429 87.771429-39.497143 87.771429-87.771429 87.771428z m0-126.780952c-21.455238 0-39.009524 17.554286-39.009524 39.009524s17.554286 39.009524 39.009524 39.009524 39.009524-17.554286 39.009524-39.009524-17.554286-39.009524-39.009524-39.009524z" fill="#2F57B2" p-id="10296"></path><path d="M472.990476 126.780952H352.060952c-8.289524 0-14.628571-6.339048-14.628571-14.628571s6.339048-14.628571 14.628571-14.628571H472.990476c8.289524 0 14.628571 6.339048 14.628572 14.628571s-6.339048 14.628571-14.628572 14.628571z" fill="#FFFFFF" p-id="10297"></path><path d="M286.232381 126.780952H273.066667c-8.289524 0-14.628571-6.339048-14.628572-14.628571s6.339048-14.628571 14.628572-14.628571h13.165714c8.289524 0 14.628571 6.339048 14.628571 14.628571s-6.339048 14.628571-14.628571 14.628571z" fill="#FFFFFF" p-id="10298"></path></svg>
             <br>
-          《{{ eventDatayear.paintingName}}》
+          {{ eventDatayear.painting_name}}
         </p>
          <p style="text-align: center;" v-if="eventDatayear.painting">
           <img :src="eventDatayear.painting" alt="" width="500" height="465">
@@ -139,7 +136,7 @@
          <p v-if="eventDatayear.calligraphy">
           <svg t="1734953304367" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6723" width="40" height="40" ><path d="M1021.123 110.792l-2.827 6.016a1020.677 1020.677 0 0 1-205.675 294.697L687.007 536.873a36.762 36.762 0 0 1-51.82 0L523.203 425.134a36.685 36.685 0 0 1 0-51.942L646.359 250.28A1009.3 1009.3 0 0 1 951.613 41.416c44.949-19.031 83.385 21.488 69.51 69.376z m-401.28 458.01l-128.681-128.81a24.678 24.678 0 0 0-34.996 0l-17.802 17.803c-37.944 37.698-33.89 106.583 11.664 151.89 45.552 45.434 114.319 49.361 152.258 11.663l17.557-17.557c9.702-9.574 9.702-25.287 0-34.99zM414.295 902.542c-6.385 6.385-13.138 12.032-20.014 17.316C250.491 1037.737 59.311 974.131 0 931.891c73.062-11.909 82.514-159.135 82.514-159.135l0.246-0.122c1.843-49.485 22.717-99.83 62.13-138.998 78.096-77.727 201.498-80.67 275.913-6.508 74.286 74.41 71.465 197.566-6.508 275.415z" fill="#707070" p-id="6724"></path></svg>
           <br>
-          《{{ eventDatayear.calligraphyName}}》
+          {{ eventDatayear.calligraphy_name}}
         </p>
          <p style="text-align: center;" v-if="eventDatayear.calligraphy">
           <img :src="eventDatayear.calligraphy" alt="" width="500" height="465">
@@ -156,14 +153,14 @@
           广东、贵州、江西民众起事甚多。
         </p>-->
         <p>
-          {{ eventDatayear.historyEvent }}
+          {{ eventDatayear.history_event }}
         </p>
         <svg t="1734077043345" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12601" width="40" height="40"><path d="M391.53614281 589.62284187c-1.43225062 42.96751313-37.23851156 76.86410719-80.20602469 75.90927469-41.53526344-0.95483344-74.47702313-34.37401125-75.90927374-75.90927469-6.20641875-42.01267969 30.07725938-77.81894156 72.08993906-77.81894062 48.21909844 0 84.02535937 35.80626094 84.02535937 77.81894062zM349.52346313 433.98495969c-42.96751313-0.95483344-77.34152437-35.32884469-77.81894063-77.81894063 0-42.01267969 35.80626094-84.02535937 77.81894062-84.02536031 42.49009687 0.95483344 76.86410719 35.32884469 77.81894157 77.81894156 0.47741719 48.21909844-35.80626094 84.02535937-77.81894157 84.02535938zM667.48306344 272.14065875c-0.95483344 42.49009687-35.32884469 76.86410719-77.81894157 77.81894156-42.01267969 6.20641875-77.81894156-30.07725938-77.81894062-77.81894156s35.80626094-77.81894156 77.81894063-77.81894063c42.49009687 0.95483344 76.86410719 35.32884469 77.81894156 77.81894063z" fill="#d81e06" p-id="12602"></path><path d="M188.15657938 907.10502594c185.71514156 18.14183906 119.83162125-179.50872281 287.40492375-179.50872375l72.08993906 59.6771025c23.87084063 215.79240094-252.07607906 269.74050188-359.49486282 119.83162125zM751.03100656 619.70010125c60.15451875-89.75436188 233.45682375-389.57212219 233.45682282-389.57212219 5.72900156-13.36767094 0.47741719-28.64500875-12.41283657-35.80626093-9.07091906-6.20641875-21.00634031-6.20641875-30.07725937 0 0 0-263.53408312 227.72782125-341.83044094 299.34034406-59.6771025 60.15451875-59.6771025 84.02535937-83.54794313 179.50872281l65.88352032 53.94810094c96.43819688-29.12242594 120.78645469-35.32884469 168.52813687-107.41878469zM247.83368094 811.14424531c-167.09588625-143.70246187-186.19255875-395.30112469-42.49009594-562.39701 0-0.47741719 0.47741719-0.47741719 0.47741625-0.95483437C283.63994281 163.76704156 391.53614281 109.81894156 505.16134531 109.81894156c155.63788219 0 257.80508156 77.81894156 257.80508157 137.97345938 23.87084063-23.87084063 47.74168125-42.01267969 65.88352031-60.15451875C793.04368625 103.61252281 667.00564625 32 505.16134531 32 244.01434719 32.47741719 32.04128 243.97306719 32.04128 505.5974825v12.4128375c0.47741719 112.19295188 40.58042906 220.56656906 113.6252025 305.54676281 30.07725938 18.14183906 72.08993906 11.93542031 102.16719844-12.4128375zM757.23742531 739.5317225c42.01267969 77.81894156-53.9481 131.76704156-143.70246187 161.84430094-6.20641875 30.07725938-23.87084063 59.6771025-53.94810094 89.75436187 209.58598219-23.87084063 359.49486281-173.77972125 251.59866281-317.48218312-12.4128375 23.87084063-30.07725938 42.01267969-53.9481 65.88352031z" fill="#d81e06" p-id="12603"></path></svg>
         <!--<p>
           宁波天一阁建成。
         </p>-->
         <p>
-          {{ eventDatayear.artEvent }}
+          {{ eventDatayear. art_event }}
         </p>
         <br>
         <h3>欧洲</h3>
@@ -172,14 +169,14 @@
           <br>
            立沃尼亚骑士团解体。
         </p>-->
-        <p>{{ eventDatayear.EuropeHistoryEvent }}</p>
+        <p>{{ eventDatayear.europe_art_event }}</p>
         <svg t="1734077043345" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12601" width="40" height="40"><path d="M391.53614281 589.62284187c-1.43225062 42.96751313-37.23851156 76.86410719-80.20602469 75.90927469-41.53526344-0.95483344-74.47702313-34.37401125-75.90927374-75.90927469-6.20641875-42.01267969 30.07725938-77.81894156 72.08993906-77.81894062 48.21909844 0 84.02535937 35.80626094 84.02535937 77.81894062zM349.52346313 433.98495969c-42.96751313-0.95483344-77.34152437-35.32884469-77.81894063-77.81894063 0-42.01267969 35.80626094-84.02535937 77.81894062-84.02536031 42.49009687 0.95483344 76.86410719 35.32884469 77.81894157 77.81894156 0.47741719 48.21909844-35.80626094 84.02535937-77.81894157 84.02535938zM667.48306344 272.14065875c-0.95483344 42.49009687-35.32884469 76.86410719-77.81894157 77.81894156-42.01267969 6.20641875-77.81894156-30.07725938-77.81894062-77.81894156s35.80626094-77.81894156 77.81894063-77.81894063c42.49009687 0.95483344 76.86410719 35.32884469 77.81894156 77.81894063z" fill="#d81e06" p-id="12602"></path><path d="M188.15657938 907.10502594c185.71514156 18.14183906 119.83162125-179.50872281 287.40492375-179.50872375l72.08993906 59.6771025c23.87084063 215.79240094-252.07607906 269.74050188-359.49486282 119.83162125zM751.03100656 619.70010125c60.15451875-89.75436188 233.45682375-389.57212219 233.45682282-389.57212219 5.72900156-13.36767094 0.47741719-28.64500875-12.41283657-35.80626093-9.07091906-6.20641875-21.00634031-6.20641875-30.07725937 0 0 0-263.53408312 227.72782125-341.83044094 299.34034406-59.6771025 60.15451875-59.6771025 84.02535937-83.54794313 179.50872281l65.88352032 53.94810094c96.43819688-29.12242594 120.78645469-35.32884469 168.52813687-107.41878469zM247.83368094 811.14424531c-167.09588625-143.70246187-186.19255875-395.30112469-42.49009594-562.39701 0-0.47741719 0.47741719-0.47741719 0.47741625-0.95483437C283.63994281 163.76704156 391.53614281 109.81894156 505.16134531 109.81894156c155.63788219 0 257.80508156 77.81894156 257.80508157 137.97345938 23.87084063-23.87084063 47.74168125-42.01267969 65.88352031-60.15451875C793.04368625 103.61252281 667.00564625 32 505.16134531 32 244.01434719 32.47741719 32.04128 243.97306719 32.04128 505.5974825v12.4128375c0.47741719 112.19295188 40.58042906 220.56656906 113.6252025 305.54676281 30.07725938 18.14183906 72.08993906 11.93542031 102.16719844-12.4128375zM757.23742531 739.5317225c42.01267969 77.81894156-53.9481 131.76704156-143.70246187 161.84430094-6.20641875 30.07725938-23.87084063 59.6771025-53.94810094 89.75436187 209.58598219-23.87084063 359.49486281-173.77972125 251.59866281-317.48218312-12.4128375 23.87084063-30.07725938 42.01267969-53.9481 65.88352031z" fill="#d81e06" p-id="12603"></path></svg>
         <!--<p>
           莫斯科瓦里西升天大教堂建成。
           <br>
           意大利雕塑家班迪内利卒
         </p>-->
-        <p>{{ eventDatayear.EuropeArtEvent }}</p>
+        <p>{{ eventDatayear.europe_history_event }}</p>
       </div>
     </el-dialog>
 
@@ -206,27 +203,755 @@ export default {
   },
   data() {
     return {
+//中国历史事件
+    items: [
+    { "year": 1865, "event": "同治帝亲政", "description": "同治帝在位13年，前12年是在两宫太后垂帘的情况下虚坐龙椅的傀儡皇帝，最后只亲政了一年。", "image_url": "https://example.com/tzdqz.jpg" },
+    { "year": 1866, "event": "曾国藩去世", "description": "曾国藩因病去世，享年62岁。他的一生充满了传奇色彩，既有辉煌的成就，也有艰辛的历程。", "image_url": "https://example.com/zgfl.jpg" },
+    { "year": 1867, "event": "洋务运动推进", "description": "洋务运动与镇压太平天国为清朝赢来了“中兴”。洋务运动内容包括军事、经济、文化诸方面，取得了一定的成效。", "image_url": "http://imgfile.95408.com/95408/547/2734370-202305181351026465bcc6afa5c.jpg" },
+    { "year": 1868, "event": "直隶大地震", "description": "直隶大地震发生于1868年，造成了重大的人员伤亡和财产损失。", "image_url": "https://example.com/zldzd.jpg" },
+    { "year": 1869, "event": "陕甘回乱平定", "description": "陕甘回民起义又称“同治陕甘回变”，是1862至1873年间，发生在陕西、甘肃的重大动乱。", "image_url": "https://example.com/sghl.jpg" },
+    { "year": 1870, "event": "天津教案爆发", "description": "天津教案是1870年在天津发生的一场震惊中外的教案，天津民众攻击法国教会机构造成数十人被杀。", "image_url": "https://example.com/tjja.jpg" },
+    { "year": 1871, "event": "塔城事变", "description": "塔城事变是1962年新疆维吾尔自治区伊犁、塔城等地发生的暴乱事件，由苏联领事馆煽动中国边民外逃。", "image_url": "https://example.com/tcsj.jpg" },
+    { "year": 1872, "event": "首批留美幼童", "description": "1872年到1875年间，清政府先后派出四批共一百二十名学生赴美国留学，揭开了中国人留美历史的新篇章。", "image_url": "https://example.com/lmyt.jpg" },
+    { "year": 1873, "event": "同治帝大婚", "description": "同治帝大婚是清朝历史上的一件大事，婚礼仪式复杂且盛大。", "image_url": "https://example.com/tzdh.jpg" },
+    { "year": 1874, "event": "日本侵台", "description": "1874年日本侵台事件，是日本将侵台图谋付诸行动的第一次，对牡丹社等进行烧杀抢掠。", "image_url": "https://example.com/rbqt.jpg" },
+    { "year": 1875, "event": "光绪帝继位", "description": "光绪帝继位后，成为清朝的皇帝，继续面临着内忧外患的挑战。", "image_url": "https://example.com/gddd.jpg" },
+    { "year": 1876, "event": "滇缅勘界", "description": "滇缅勘界是清朝与缅甸之间的边界划定工作，对于维护国家领土完整具有重要意义。", "image_url": "https://example.com/dbkj.jpg" },
+    { "year": 1877, "event": "新疆大饥荒", "description": "新疆大饥荒造成了巨大的人道主义危机，对当地社会经济造成了深远影响。", "image_url": "https://example.com/xjdz.jpg" },
+    { "year": 1878, "event": "陕晋饥荒", "description": "陕晋饥荒是清朝晚期发生在陕西和山西的严重饥荒事件。", "image_url": "https://example.com/sjjz.jpg" },
+    { "year": 1879, "event": "驻藏大臣改制", "description": "驻藏大臣改制是清朝对西藏地方行政制度进行的一次重大改革，加强了中央政府对西藏的管辖。", "image_url": "https://example.com/zcdgz.jpg" },
+    { "year": 1880, "event": "筹设电报局", "description": "筹设电报局标志着中国近代通讯技术的起步，对于提高信息传递效率具有重要意义。", "image_url": "https://example.com/cdj.jpg" },
+    { "year": 1881, "event": "清俄伊犁条约", "description": "清俄伊犁条约是清朝与沙俄签订的一项条约，涉及领土和贸易等问题。", "image_url": "https://example.com/qeyl.jpg" },
+    { "year": 1882, "event": "福州船政学堂", "description": "福州船政学堂是中国近代第一所海军学校，培养了大批海军人才。", "image_url": "https://pics1.baidu.com/feed/10dfa9ec8a136327facbd8db6f42c6e209fac714.jpeg@f_auto?token=b95b4c5a76add415ff9ae46912023742" },
+    { "year": 1883, "event": "中法战争爆发", "description": "中法战争是清朝与法国之间的一场战争，主要战场在越南北部和中国东南沿海。", "image_url": "https://th.bing.com/th/id/OIP.bXXWP_FZdZ7STE2T3qwbkAAAAA?rs=1&pid=ImgDetMain" },
+    { "year": 1884, "event": "左宗棠收复新疆", "description": "左宗棠率领清军成功收复新疆，维护了国家领土完整。", "image_url": "https://example.com/zztfxj.jpg" },
+    { "year": 1885, "event": "台湾建省", "description": "台湾建省标志着台湾地区正式成为中国的一个省份，加强了中央政府对台湾的管理。", "image_url": "https://example.com/twjs.jpg" },
+    { "year": 1886, "event": "缅甸归英", "description": "缅甸在1886年成为英国的殖民地，标志着英国对缅甸的直接统治开始。", "image_url": "https://example.com/bmgyy.jpg" },
+    { "year": 1887, "event": "黄河改道", "description": "1887年黄河发生重大改道，影响了数百万人民的生活和华北地区的农业生产。", "image_url": "https://example.com/hhgd.jpg" },
+    { "year": 1888, "event": "光绪帝亲政", "description": "光绪帝在1888年开始亲政，试图推行一系列改革以挽救清朝的颓势。", "image_url": "https://example.com/gddqz.jpg" },
+    { "year": 1889, "event": "大沽惨案", "description": "1889年发生的大沽惨案是清朝末年的一次重大军事冲突，显示了清朝海军的脆弱。", "image_url": "https://example.com/dgca.jpg" },
+    { "year": 1890, "event": "新疆建省", "description": "1890年新疆正式建省，加强了中央政府对新疆地区的控制和管理。", "image_url": "https://example.com/xjjss.jpg" },
+    { "year": 1891, "event": "中法新约", "description": "中法新约是1891年清朝与法国签订的条约，涉及两国在东南亚的利益划分。", "image_url": "https://example.com/zfxy.jpg" },
+    { "year": 1892, "event": "淮军改革", "description": "1892年淮军进行了一系列现代化改革，以提高军队的战斗力。", "image_url": "https://example.com/hjgg.jpg" },
+    { "year": 1893, "event": "张之洞督鄂", "description": "张之洞在1893年被任命为湖广总督，他在任内推行了一系列洋务运动和教育改革。", "image_url": "https://example.com/zzdg.jpg" },
+    { "year": 1894, "event": "甲午战争", "description": "甲午战争是1894年爆发的中日之间的战争，清朝战败，导致台湾被割让给日本。", "image_url": "https://pic3.zhimg.com/v2-8b1f7115a512956bb2c8322f4905f6ce_r.jpg" },
+    { "year": 1895, "event": "马关条约", "description": "马关条约是1895年清朝与日本签订的条约，结束了甲午战争，清朝割让台湾和支付巨额赔款。", "image_url": "https://th.bing.com/th/id/OIP.yh6b5ZV5S_vAmBgPolzzNAHaFS?rs=1&pid=ImgDetMain" },
+    { "year": 1896, "event": "李鸿章访俄", "description": "1896年李鸿章访问俄国，试图寻求国际支持以对抗日本的扩张。", "image_url": "https://example.com/lhzfr.jpg" },
+    { "year": 1897, "event": "胶州湾租借", "description": "1897年德国租借胶州湾，标志着列强瓜分中国的开始。", "image_url": "https://example.com/jzwz.jpg" },
+    { "year": 1898, "event": "戊戌变法", "description": "戊戌变法是1898年清朝的一次重要政治改革尝试，旨在挽救国家的危机，但最终失败。", "image_url": "https://th.bing.com/th/id/OIP.R7RQzCU5dfpWNX5b93RnKAHaEL?rs=1&pid=ImgDetMain" },
+    { "year": 1899, "event": "义和团运动", "description": "义和团运动是1899年爆发的一场反对外国势力和基督教的民族主义运动。", "image_url": "https://example.com/yht.jpg" },
+    { "year": 1900, "event": "八国联军侵华", "description": "1900年八国联军侵华，镇压义和团运动，导致清朝政府进一步削弱。", "image_url": "https://example.com/bglj.jpg" },
+    { "year": 1901, "event": "辛丑条约签订", "description": "辛丑条约是1901年清朝与八国联军签订的条约，标志着八国联军侵华战争的结束。", "image_url": "https://example.com/xczy.jpg" },
+    { "year": 1902, "event": "废除科举制", "description": "1902年清朝废除了科举制度，结束了长达千年的选拔官员的传统方式。", "image_url": "https://example.com/fckj.jpg" },
+    { "year": 1903, "event": "京师大学堂扩建", "description": "京师大学堂在1903年进行了扩建，成为新式教育的重要基地。", "image_url": "https://example.com/jdsdxt.jpg" },
+    { "year": 1904, "event": "日俄战争爆发", "description": "日俄战争是1904年爆发的日本和俄国之间的战争，主要战场在中国东北。", "image_url": "https://example.com/rrzz.jpg" },
+    { "year": 1905, "event": "同盟会成立", "description": "同盟会是1905年成立的中国第一个全国性的革命团体，旨在推翻清朝建立民主共和国。", "image_url": "https://example.com/mtj.jpg" },
+    { "year": 1906, "event": "废除奴婢制", "description": "1906年清朝正式废除了奴婢制度，标志着社会制度的一大进步。", "image_url": "https://example.com/fcnz.jpg" },
 
-        items: [
-        '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '冯梦龙生', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '冯梦龙生', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '冯梦龙生', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '冯梦龙生', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生','文徵明书《后赤壁赋》', '恽向生','恽向生','恽向生'
-      ],
-      /*items2: [
-        { year: 1865, data: '数据1' },
-        { year: 1870, data: '数据2' },
-        { year: 1900, data: '数据3' },
-      ],*/
+    
+    { "year": 1907, "event": "秋瑾就义", "description": "秋瑾是近代中国女性革命家的代表人物，1907年因参与反清活动被捕并就义。", "image_url": "https://example.com/qjyy.jpg" },
+    { "year": 1908, "event": "光绪帝驾崩", "description": "光绪帝在1908年驾崩，结束了他的悲剧性统治，清朝的命运进一步走向衰败。", "image_url": "https://example.com/gddjb.jpg" },
+    { "year": 1909, "event": "清末新政", "description": "清末新政是清朝末期的一系列改革措施，旨在挽救王朝的危机，但最终未能阻止其灭亡。", "image_url": "https://example.com/qmxz.jpg" },
+    { "year": 1910, "event": "铁路国有化", "description": "1910年清朝政府推行铁路国有化政策，试图将铁路控制权从外国手中收回。", "image_url": "https://example.com/tlgy.jpg" },
+    { "year": 1911, "event": "辛亥革命", "description": "辛亥革命是中国历史上的一次重大转折点，结束了清朝的统治，开启了中国的共和时代。", "image_url": "https://example.com/xhgz.jpg" },
+    { "year": 1912, "event": "中华民国成立", "description": "1912年中华民国正式成立，标志着中国从帝制向共和制的转变。", "image_url": "https://example.com/zhrmglj.jpg" },
+    { "year": 1913, "event": "宋教仁被刺", "description": "宋教仁是国民党的重要领导人，1913年被刺杀，事件震惊全国。", "image_url": "https://example.com/sjrbc.jpg" },
+    { "year": 1914, "event": "袁世凯称帝", "description": "袁世凯在1914年试图复辟帝制，自称皇帝，但遭到广泛反对。", "image_url": "https://example.com/yskcd.jpg" },
+    { "year": 1915, "event": "新文化运动", "description": "新文化运动是一场思想解放运动，推动了中国社会的思想革新和文化变革。", "image_url": "https://th.bing.com/th/id/OIP.PgmFa3yH24ndDa2KpRBdZwHaEK?rs=1&pid=ImgDetMain" },
+    { "year": 1916, "event": "袁世凯去世", "description": "袁世凯在1916年去世，他的去世使中国政局更加动荡不安。", "image_url": "https://example.com/yskqs.jpg" },
+    { "year": 1917, "event": "张勋复辟", "description": "张勋在1917年试图复辟清朝，但很快失败，被称为'张勋复辟'。", "image_url": "https://example.com/zxfp.jpg" },
+    { "year": 1918, "event": "五四运动", "description": "五四运动是一场以反对帝国主义和封建主义为目标的学生运动，对中国现代史产生了深远影响。", "image_url": "https://th.bing.com/th/id/OIP.nDw0ycLl7WLBiRNeTaLjaAHaEK?rs=1&pid=ImgDetMain" },
+    { "year": 1919, "event": "《巴黎和约》", "description": "1919年的《巴黎和约》将德国在山东的权益转让给日本，引发中国的强烈抗议。", "image_url": "https://example.com/blhyyj.jpg" },
+    { "year": 1920, "event": "直皖战争", "description": "直皖战争是1920年直系军阀与皖系军阀之间的战争，加剧了军阀割据的局面。", "image_url": "https://example.com/zwz.jpg" },
+    { "year": 1921, "event": "中共成立", "description": "1921年中国共产党正式成立，是中国革命历史上的一个里程碑。", "image_url": "https://example.com/gjdz.jpg" },
+    { "year": 1922, "event": "第一次直奉战争", "description": "第一次直奉战争是直系和奉系军阀之间的冲突，进一步显示了军阀间的矛盾和斗争。", "image_url": "https://example.com/dycfz.jpg" },
+    { "year": 1923, "event": "曹锟贿选", "description": "曹锟通过贿赂手段当选总统，引发了广泛的不满和抗议。", "image_url": "https://example.com/ckhx.jpg" },
+    { "year": 1924, "event": "黄埔军校成立", "description": "黄埔军校的成立培养了大量军事人才，对中国近代史产生了重要影响。", "image_url": "https://example.com/hpjx.jpg" },
+    { "year": 1925, "event": "五卅运动", "description": "五卅运动是一次反帝爱国运动，抗议帝国主义的暴行，激发了民族意识。", "image_url": "https://example.com/wsyd.jpg" },
+    { "year": 1926, "event": "北伐战争开始", "description": "北伐战争是国民党为统一中国而发动的军事行动，标志着国民革命的高潮。", "image_url": "https://example.com/bfz.jpg" },
+    { "year": 1927, "event": "四一二政变", "description": "四一二政变是国民党内部的一次重大分裂，导致了国共合作的破裂。", "image_url": "https://example.com/srz.jpg" },
+    { "year": 1928, "event": "东北易帜", "description": "1928年，张学良宣布东北易帜，归顺国民政府，结束了北洋政府的分裂局面。", "image_url": "https://example.com/ddbz.jpg" },
+    { "year": 1929, "event": "中东路冲突", "description": "中东路冲突是1929年中苏两国因中东铁路权益问题而发生的武装冲突。", "image_url": "https://example.com/zdlg.jpg" },
+    { "year": 1930, "event": "中原大战", "description": "中原大战是1930年国民政府与各地军阀之间的大规模军事冲突。", "image_url": "https://example.com/zydz.jpg" },
+    { "year": 1931, "event": "九一八事变", "description": "九一八事变是日本侵华的开始，导致东北三省迅速沦陷。", "image_url": "https://example.com/jiuyiba.jpg" },
+    { "year": 1932, "event": "淞沪抗战", "description": "淞沪抗战是1932年中日在上海地区发生的激烈战斗，展现了中国军队的抵抗精神。", "image_url": "https://example.com/shkz.jpg" },
+    { "year": 1933, "event": "长城抗战", "description": "长城抗战是中国军队在长城沿线抗击日军的一系列战斗。", "image_url": "https://example.com/chz.jpg" },
+    { "year": 1934, "event": "红军长征开始", "description": "红军长征是中国革命历史上的伟大壮举，红军为了躲避国民党军队的围剿而进行的长距离战略转移。", "image_url": "https://example.com/hc.jpg" },
+    { "year": 1935, "event": "遵义会议", "description": "遵义会议是中国共产党历史上的一个转折点，确立了毛泽东在党内的领导地位。", "image_url": "https://example.com/zyh.jpg" },
+    { "year": 1936, "event": "西安事变", "description": "西安事变是1936年发生的一次军事政变，最终促成了国共两党的第二次合作。", "image_url": "https://example.com/xasb.jpg" },
+    { "year": 1937, "event": "七七事变", "description": "七七事变标志着全面抗日战争的爆发，中国开始了全国性的抗战。", "image_url": "https://example.com/qiqi.jpg" },
+    { "year": 1938, "event": "武汉会战", "description": "武汉会战是抗日战争中的一场大规模战役，中国军队进行了顽强的抵抗。", "image_url": "https://example.com/whhz.jpg" },
+    { "year": 1939, "event": "重庆大轰炸", "description": "重庆大轰炸是日军对重庆进行的长期战略轰炸，造成了巨大的人员伤亡和财产损失。", "image_url": "https://example.com/cqdz.jpg" },
+    { "year": 1940, "event": "百团大战", "description": "百团大战是八路军在华北地区对日军发动的大规模进攻，提高了中国军队的士气。", "image_url": "https://example.com/btz.jpg" },
+    { "year": 1941, "event": "皖南事变", "description": "皖南事变是国共内战期间的一次重大冲突，导致了新四军的重大损失。", "image_url": "https://example.com/wnsj.jpg" },
+    { "year": 1942, "event": "大生产运动", "description": "大生产运动是中国共产党在抗日根据地开展的一场旨在自给自足的经济建设运动。", "image_url": "https://example.com/dxs.jpg" },
+    { "year": 1943, "event": "开罗会议", "description": "开罗会议是中美英三国领导人讨论战后国际秩序的重要会议。", "image_url": "https://example.com/klhy.jpg" },
+    { "year": 1944, "event": "豫湘桂会战", "description": "豫湘桂会战是抗日战争中日军发动的一次大规模进攻，中国军队进行了坚决抵抗。", "image_url": "https://example.com/yhzh.jpg" },
+    { "year": 1945, "event": "抗战胜利", "description": "1945年，中国人民经过八年艰苦抗战，最终取得了抗日战争的伟大胜利。", "image_url": "https://th.bing.com/th/id/R.c6b4773e3b82e218a4e8d59d7a10fa48?rik=p9RVerK9HAgVFA&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn12%2f249%2fw640h409%2f20181112%2f2976-hnstwwq9662046.jpg&ehk=s3lHFSmXuHWdmnh8r9j9IUQbziMhVE6oWxubq2mEhGc%3d&risl=&pid=ImgRaw&r=0" },
+    { "year": 1946, "event": "内战爆发", "description": "内战爆发标志着国共两党合作关系的彻底破裂，中国进入了全面内战时期。", "image_url": "https://example.com/nz.jpg" },
+    { "year": 1947, "event": "土地改革", "description": "土地改革是中国共产党在解放区进行的一项重要社会改革，旨在解决农民土地问题。", "image_url": "https://example.com/tdgg.jpg" },
+    { "year": 1948, "event": "三大战役", "description": "三大战役是1948年中国共产党发动的三次决定性战役，为全国解放奠定了基础。", "image_url": "https://example.com/sdz.jpg" },
+     { "year": 1949, "event": "中华人民共和国成立", "description": "1949年10月1日，中华人民共和国在北京宣告成立，标志着新中国的诞生。", "image_url": "https://example.com/zgrgfx.jpg" },
+    { "year": 1950, "event": "抗美援朝开始", "description": "1950年，中国人民志愿军开赴朝鲜，开始了抗美援朝战争，以支援朝鲜抵抗美国侵略。", "image_url": "https://example.com/kmyc.jpg" },
+    { "year": 1951, "event": "西藏和平解放", "description": "1951年，西藏和平解放，结束了西藏的封建农奴制度，实现了西藏的和平解放。", "image_url": "https://example.com/xzhpjf.jpg" },
+    { "year": 1952, "event": "土地改革完成", "description": "1952年底，全国土地改革基本完成，彻底废除了封建土地制度，使广大农民获得了土地。", "image_url": "https://example.com/tdggwc.jpg" },
+    { "year": 1953, "event": "一五计划开始", "description": "1953年，中国开始实施第一个五年计划，旨在有计划地进行社会主义建设。", "image_url": "https://example.com/ywjh.jpg" },
+    { "year": 1954, "event": "第一部宪法颁布", "description": "1954年，中华人民共和国第一部宪法颁布，确立了国家的基本政治制度和公民的基本权利义务。", "image_url": "https://example.com/xdfxba.jpg" },
+    { "year": 1955, "event": "和平共处五项原则提出", "description": "1955年，周恩来在万隆会议上提出和平共处五项原则，成为国际关系中的重要准则。", "image_url": "https://th.bing.com/th/id/OIP.3ArfIkuf4a6BNfkmLM8dHAHaFE?rs=1&pid=ImgDetMain" },
+    { "year": 1956, "event": "双百方针提出", "description": "1956年，毛泽东提出'百花齐放，百家争鸣'的方针，鼓励在科学和文化领域内的自由讨论和创新。", "image_url": "https://example.com/shz.jpg" },
+    
+  ],
       items2: [
-         '春 生于上海董家汇', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '书法长进', '书法长进', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '冯梦龙生', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '归有光卒', '书法长进', '陆治卒', '文伯仁卒', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生', '文徵明书《后赤壁赋》', '冯从吾生', '陈继儒生', '文徵明卒', '唐光启生', '王衡生', '徐光启生', '赵琦美生', '曾鲸生',
-        '周凤来', '书法长进', '冯梦龙生', '陆治卒', '开始学画', '陈洪绶生', '沈德符生', '潘允端生', '钱谦益生', '文嘉卒', '梅鼎祚撰《玉合记》', '蓝瑛生', '恽向生','文徵明书《后赤壁赋》', '恽向生','恽向生','恽向生'
+    { "year": 1865, "event": "同治帝亲政", "description": "同治帝在位13年，前12年是在两宫太后垂帘的情况下虚坐龙椅的傀儡皇帝，最后只亲政了一年。", "image_url": "https://example.com/tzdqz.jpg" },
+    { "year": 1866, "event": "曾国藩去世", "description": "曾国藩因病去世，享年62岁。他的一生充满了传奇色彩，既有辉煌的成就，也有艰辛的历程。", "image_url": "https://example.com/zgfl.jpg" },
+    { "year": 1867, "event": "洋务运动推进", "description": "洋务运动与镇压太平天国为清朝赢来了“中兴”。洋务运动内容包括军事、经济、文化诸方面，取得了一定的成效。", "image_url": "http://imgfile.95408.com/95408/547/2734370-202305181351026465bcc6afa5c.jpg" },
+    { "year": 1868, "event": "直隶大地震", "description": "直隶大地震发生于1868年，造成了重大的人员伤亡和财产损失。", "image_url": "https://example.com/zldzd.jpg" },
+    { "year": 1869, "event": "陕甘回乱平定", "description": "陕甘回民起义又称“同治陕甘回变”，是1862至1873年间，发生在陕西、甘肃的重大动乱。", "image_url": "https://example.com/sghl.jpg" },
+    { "year": 1870, "event": "天津教案爆发", "description": "天津教案是1870年在天津发生的一场震惊中外的教案，天津民众攻击法国教会机构造成数十人被杀。", "image_url": "https://example.com/tjja.jpg" },
+    { "year": 1871, "event": "塔城事变", "description": "塔城事变是1962年新疆维吾尔自治区伊犁、塔城等地发生的暴乱事件，由苏联领事馆煽动中国边民外逃。", "image_url": "https://example.com/tcsj.jpg" },
+    { "year": 1872, "event": "首批留美幼童", "description": "1872年到1875年间，清政府先后派出四批共一百二十名学生赴美国留学，揭开了中国人留美历史的新篇章。", "image_url": "https://example.com/lmyt.jpg" },
+    { "year": 1873, "event": "同治帝大婚", "description": "同治帝大婚是清朝历史上的一件大事，婚礼仪式复杂且盛大。", "image_url": "https://example.com/tzdh.jpg" },
+    { "year": 1874, "event": "日本侵台", "description": "1874年日本侵台事件，是日本将侵台图谋付诸行动的第一次，对牡丹社等进行烧杀抢掠。", "image_url": "https://example.com/rbqt.jpg" },
+    { "year": 1875, "event": "光绪帝继位", "description": "光绪帝继位后，成为清朝的皇帝，继续面临着内忧外患的挑战。", "image_url": "https://example.com/gddd.jpg" },
+    { "year": 1876, "event": "滇缅勘界", "description": "滇缅勘界是清朝与缅甸之间的边界划定工作，对于维护国家领土完整具有重要意义。", "image_url": "https://example.com/dbkj.jpg" },
+    { "year": 1877, "event": "新疆大饥荒", "description": "新疆大饥荒造成了巨大的人道主义危机，对当地社会经济造成了深远影响。", "image_url": "https://example.com/xjdz.jpg" },
+    { "year": 1878, "event": "陕晋饥荒", "description": "陕晋饥荒是清朝晚期发生在陕西和山西的严重饥荒事件。", "image_url": "https://example.com/sjjz.jpg" },
+    { "year": 1879, "event": "驻藏大臣改制", "description": "驻藏大臣改制是清朝对西藏地方行政制度进行的一次重大改革，加强了中央政府对西藏的管辖。", "image_url": "https://example.com/zcdgz.jpg" },
+    { "year": 1880, "event": "筹设电报局", "description": "筹设电报局标志着中国近代通讯技术的起步，对于提高信息传递效率具有重要意义。", "image_url": "https://example.com/cdj.jpg" },
+    { "year": 1881, "event": "清俄伊犁条约", "description": "清俄伊犁条约是清朝与沙俄签订的一项条约，涉及领土和贸易等问题。", "image_url": "https://example.com/qeyl.jpg" },
+    { "year": 1882, "event": "福州船政学堂", "description": "福州船政学堂是中国近代第一所海军学校，培养了大批海军人才。", "image_url": "https://pics1.baidu.com/feed/10dfa9ec8a136327facbd8db6f42c6e209fac714.jpeg@f_auto?token=b95b4c5a76add415ff9ae46912023742" },
+    { "year": 1883, "event": "中法战争爆发", "description": "中法战争是清朝与法国之间的一场战争，主要战场在越南北部和中国东南沿海。", "image_url": "https://th.bing.com/th/id/OIP.bXXWP_FZdZ7STE2T3qwbkAAAAA?rs=1&pid=ImgDetMain" },
+    { "year": 1884, "event": "左宗棠收复新疆", "description": "左宗棠率领清军成功收复新疆，维护了国家领土完整。", "image_url": "https://example.com/zztfxj.jpg" },
+    { "year": 1885, "event": "台湾建省", "description": "台湾建省标志着台湾地区正式成为中国的一个省份，加强了中央政府对台湾的管理。", "image_url": "https://example.com/twjs.jpg" },
+    { "year": 1886, "event": "缅甸归英", "description": "缅甸在1886年成为英国的殖民地，标志着英国对缅甸的直接统治开始。", "image_url": "https://example.com/bmgyy.jpg" },
+    { "year": 1887, "event": "黄河改道", "description": "1887年黄河发生重大改道，影响了数百万人民的生活和华北地区的农业生产。", "image_url": "https://example.com/hhgd.jpg" },
+    { "year": 1888, "event": "光绪帝亲政", "description": "光绪帝在1888年开始亲政，试图推行一系列改革以挽救清朝的颓势。", "image_url": "https://example.com/gddqz.jpg" },
+    { "year": 1889, "event": "大沽惨案", "description": "1889年发生的大沽惨案是清朝末年的一次重大军事冲突，显示了清朝海军的脆弱。", "image_url": "https://example.com/dgca.jpg" },
+    { "year": 1890, "event": "新疆建省", "description": "1890年新疆正式建省，加强了中央政府对新疆地区的控制和管理。", "image_url": "https://example.com/xjjss.jpg" },
+    { "year": 1891, "event": "中法新约", "description": "中法新约是1891年清朝与法国签订的条约，涉及两国在东南亚的利益划分。", "image_url": "https://example.com/zfxy.jpg" },
+    { "year": 1892, "event": "淮军改革", "description": "1892年淮军进行了一系列现代化改革，以提高军队的战斗力。", "image_url": "https://example.com/hjgg.jpg" },
+    { "year": 1893, "event": "张之洞督鄂", "description": "张之洞在1893年被任命为湖广总督，他在任内推行了一系列洋务运动和教育改革。", "image_url": "https://example.com/zzdg.jpg" },
+    { "year": 1894, "event": "甲午战争", "description": "甲午战争是1894年爆发的中日之间的战争，清朝战败，导致台湾被割让给日本。", "image_url": "https://pic3.zhimg.com/v2-8b1f7115a512956bb2c8322f4905f6ce_r.jpg" },
+    { "year": 1895, "event": "马关条约", "description": "马关条约是1895年清朝与日本签订的条约，结束了甲午战争，清朝割让台湾和支付巨额赔款。", "image_url": "https://th.bing.com/th/id/OIP.yh6b5ZV5S_vAmBgPolzzNAHaFS?rs=1&pid=ImgDetMain" },
+    { "year": 1896, "event": "李鸿章访俄", "description": "1896年李鸿章访问俄国，试图寻求国际支持以对抗日本的扩张。", "image_url": "https://example.com/lhzfr.jpg" },
+    { "year": 1897, "event": "胶州湾租借", "description": "1897年德国租借胶州湾，标志着列强瓜分中国的开始。", "image_url": "https://example.com/jzwz.jpg" },
+    { "year": 1898, "event": "戊戌变法", "description": "戊戌变法是1898年清朝的一次重要政治改革尝试，旨在挽救国家的危机，但最终失败。", "image_url": "https://th.bing.com/th/id/OIP.R7RQzCU5dfpWNX5b93RnKAHaEL?rs=1&pid=ImgDetMain" },
+    { "year": 1899, "event": "义和团运动", "description": "义和团运动是1899年爆发的一场反对外国势力和基督教的民族主义运动。", "image_url": "https://example.com/yht.jpg" },
+    { "year": 1900, "event": "八国联军侵华", "description": "1900年八国联军侵华，镇压义和团运动，导致清朝政府进一步削弱。", "image_url": "https://example.com/bglj.jpg" },
+    { "year": 1901, "event": "辛丑条约签订", "description": "辛丑条约是1901年清朝与八国联军签订的条约，标志着八国联军侵华战争的结束。", "image_url": "https://example.com/xczy.jpg" },
+    { "year": 1902, "event": "废除科举制", "description": "1902年清朝废除了科举制度，结束了长达千年的选拔官员的传统方式。", "image_url": "https://example.com/fckj.jpg" },
+    { "year": 1903, "event": "京师大学堂扩建", "description": "京师大学堂在1903年进行了扩建，成为新式教育的重要基地。", "image_url": "https://example.com/jdsdxt.jpg" },
+    { "year": 1904, "event": "日俄战争爆发", "description": "日俄战争是1904年爆发的日本和俄国之间的战争，主要战场在中国东北。", "image_url": "https://example.com/rrzz.jpg" },
+    { "year": 1905, "event": "同盟会成立", "description": "同盟会是1905年成立的中国第一个全国性的革命团体，旨在推翻清朝建立民主共和国。", "image_url": "https://example.com/mtj.jpg" },
+    { "year": 1906, "event": "废除奴婢制", "description": "1906年清朝正式废除了奴婢制度，标志着社会制度的一大进步。", "image_url": "https://example.com/fcnz.jpg" },
 
-      ],
+    
+    { "year": 1907, "event": "秋瑾就义", "description": "秋瑾是近代中国女性革命家的代表人物，1907年因参与反清活动被捕并就义。", "image_url": "https://example.com/qjyy.jpg" },
+    { "year": 1908, "event": "光绪帝驾崩", "description": "光绪帝在1908年驾崩，结束了他的悲剧性统治，清朝的命运进一步走向衰败。", "image_url": "https://example.com/gddjb.jpg" },
+    { "year": 1909, "event": "清末新政", "description": "清末新政是清朝末期的一系列改革措施，旨在挽救王朝的危机，但最终未能阻止其灭亡。", "image_url": "https://example.com/qmxz.jpg" },
+    { "year": 1910, "event": "铁路国有化", "description": "1910年清朝政府推行铁路国有化政策，试图将铁路控制权从外国手中收回。", "image_url": "https://example.com/tlgy.jpg" },
+    { "year": 1911, "event": "辛亥革命", "description": "辛亥革命是中国历史上的一次重大转折点，结束了清朝的统治，开启了中国的共和时代。", "image_url": "https://example.com/xhgz.jpg" },
+    { "year": 1912, "event": "中华民国成立", "description": "1912年中华民国正式成立，标志着中国从帝制向共和制的转变。", "image_url": "https://example.com/zhrmglj.jpg" },
+    { "year": 1913, "event": "宋教仁被刺", "description": "宋教仁是国民党的重要领导人，1913年被刺杀，事件震惊全国。", "image_url": "https://example.com/sjrbc.jpg" },
+    { "year": 1914, "event": "袁世凯称帝", "description": "袁世凯在1914年试图复辟帝制，自称皇帝，但遭到广泛反对。", "image_url": "https://example.com/yskcd.jpg" },
+    { "year": 1915, "event": "新文化运动", "description": "新文化运动是一场思想解放运动，推动了中国社会的思想革新和文化变革。", "image_url": "https://th.bing.com/th/id/OIP.PgmFa3yH24ndDa2KpRBdZwHaEK?rs=1&pid=ImgDetMain" },
+    { "year": 1916, "event": "袁世凯去世", "description": "袁世凯在1916年去世，他的去世使中国政局更加动荡不安。", "image_url": "https://example.com/yskqs.jpg" },
+    { "year": 1917, "event": "张勋复辟", "description": "张勋在1917年试图复辟清朝，但很快失败，被称为'张勋复辟'。", "image_url": "https://example.com/zxfp.jpg" },
+    { "year": 1918, "event": "五四运动", "description": "五四运动是一场以反对帝国主义和封建主义为目标的学生运动，对中国现代史产生了深远影响。", "image_url": "https://th.bing.com/th/id/OIP.nDw0ycLl7WLBiRNeTaLjaAHaEK?rs=1&pid=ImgDetMain" },
+    { "year": 1919, "event": "《巴黎和约》", "description": "1919年的《巴黎和约》将德国在山东的权益转让给日本，引发中国的强烈抗议。", "image_url": "https://example.com/blhyyj.jpg" },
+    { "year": 1920, "event": "直皖战争", "description": "直皖战争是1920年直系军阀与皖系军阀之间的战争，加剧了军阀割据的局面。", "image_url": "https://example.com/zwz.jpg" },
+    { "year": 1921, "event": "中共成立", "description": "1921年中国共产党正式成立，是中国革命历史上的一个里程碑。", "image_url": "https://example.com/gjdz.jpg" },
+    { "year": 1922, "event": "第一次直奉战争", "description": "第一次直奉战争是直系和奉系军阀之间的冲突，进一步显示了军阀间的矛盾和斗争。", "image_url": "https://example.com/dycfz.jpg" },
+    { "year": 1923, "event": "曹锟贿选", "description": "曹锟通过贿赂手段当选总统，引发了广泛的不满和抗议。", "image_url": "https://example.com/ckhx.jpg" },
+    { "year": 1924, "event": "黄埔军校成立", "description": "黄埔军校的成立培养了大量军事人才，对中国近代史产生了重要影响。", "image_url": "https://example.com/hpjx.jpg" },
+    { "year": 1925, "event": "五卅运动", "description": "五卅运动是一次反帝爱国运动，抗议帝国主义的暴行，激发了民族意识。", "image_url": "https://example.com/wsyd.jpg" },
+    { "year": 1926, "event": "北伐战争开始", "description": "北伐战争是国民党为统一中国而发动的军事行动，标志着国民革命的高潮。", "image_url": "https://example.com/bfz.jpg" },
+    { "year": 1927, "event": "四一二政变", "description": "四一二政变是国民党内部的一次重大分裂，导致了国共合作的破裂。", "image_url": "https://example.com/srz.jpg" },
+    { "year": 1928, "event": "东北易帜", "description": "1928年，张学良宣布东北易帜，归顺国民政府，结束了北洋政府的分裂局面。", "image_url": "https://example.com/ddbz.jpg" },
+    { "year": 1929, "event": "中东路冲突", "description": "中东路冲突是1929年中苏两国因中东铁路权益问题而发生的武装冲突。", "image_url": "https://example.com/zdlg.jpg" },
+    { "year": 1930, "event": "中原大战", "description": "中原大战是1930年国民政府与各地军阀之间的大规模军事冲突。", "image_url": "https://example.com/zydz.jpg" },
+    { "year": 1931, "event": "九一八事变", "description": "九一八事变是日本侵华的开始，导致东北三省迅速沦陷。", "image_url": "https://example.com/jiuyiba.jpg" },
+    { "year": 1932, "event": "淞沪抗战", "description": "淞沪抗战是1932年中日在上海地区发生的激烈战斗，展现了中国军队的抵抗精神。", "image_url": "https://example.com/shkz.jpg" },
+    { "year": 1933, "event": "长城抗战", "description": "长城抗战是中国军队在长城沿线抗击日军的一系列战斗。", "image_url": "https://example.com/chz.jpg" },
+    { "year": 1934, "event": "红军长征开始", "description": "红军长征是中国革命历史上的伟大壮举，红军为了躲避国民党军队的围剿而进行的长距离战略转移。", "image_url": "https://example.com/hc.jpg" },
+    { "year": 1935, "event": "遵义会议", "description": "遵义会议是中国共产党历史上的一个转折点，确立了毛泽东在党内的领导地位。", "image_url": "https://example.com/zyh.jpg" },
+    { "year": 1936, "event": "西安事变", "description": "西安事变是1936年发生的一次军事政变，最终促成了国共两党的第二次合作。", "image_url": "https://example.com/xasb.jpg" },
+    { "year": 1937, "event": "七七事变", "description": "七七事变标志着全面抗日战争的爆发，中国开始了全国性的抗战。", "image_url": "https://example.com/qiqi.jpg" },
+    { "year": 1938, "event": "武汉会战", "description": "武汉会战是抗日战争中的一场大规模战役，中国军队进行了顽强的抵抗。", "image_url": "https://example.com/whhz.jpg" },
+    { "year": 1939, "event": "重庆大轰炸", "description": "重庆大轰炸是日军对重庆进行的长期战略轰炸，造成了巨大的人员伤亡和财产损失。", "image_url": "https://example.com/cqdz.jpg" },
+    { "year": 1940, "event": "百团大战", "description": "百团大战是八路军在华北地区对日军发动的大规模进攻，提高了中国军队的士气。", "image_url": "https://example.com/btz.jpg" },
+    { "year": 1941, "event": "皖南事变", "description": "皖南事变是国共内战期间的一次重大冲突，导致了新四军的重大损失。", "image_url": "https://example.com/wnsj.jpg" },
+    { "year": 1942, "event": "大生产运动", "description": "大生产运动是中国共产党在抗日根据地开展的一场旨在自给自足的经济建设运动。", "image_url": "https://example.com/dxs.jpg" },
+    { "year": 1943, "event": "开罗会议", "description": "开罗会议是中美英三国领导人讨论战后国际秩序的重要会议。", "image_url": "https://example.com/klhy.jpg" },
+    { "year": 1944, "event": "豫湘桂会战", "description": "豫湘桂会战是抗日战争中日军发动的一次大规模进攻，中国军队进行了坚决抵抗。", "image_url": "https://example.com/yhzh.jpg" },
+    { "year": 1945, "event": "抗战胜利", "description": "1945年，中国人民经过八年艰苦抗战，最终取得了抗日战争的伟大胜利。", "image_url": "https://th.bing.com/th/id/R.c6b4773e3b82e218a4e8d59d7a10fa48?rik=p9RVerK9HAgVFA&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn12%2f249%2fw640h409%2f20181112%2f2976-hnstwwq9662046.jpg&ehk=s3lHFSmXuHWdmnh8r9j9IUQbziMhVE6oWxubq2mEhGc%3d&risl=&pid=ImgRaw&r=0" },
+    { "year": 1946, "event": "内战爆发", "description": "内战爆发标志着国共两党合作关系的彻底破裂，中国进入了全面内战时期。", "image_url": "https://example.com/nz.jpg" },
+    { "year": 1947, "event": "土地改革", "description": "土地改革是中国共产党在解放区进行的一项重要社会改革，旨在解决农民土地问题。", "image_url": "https://example.com/tdgg.jpg" },
+    { "year": 1948, "event": "三大战役", "description": "三大战役是1948年中国共产党发动的三次决定性战役，为全国解放奠定了基础。", "image_url": "https://example.com/sdz.jpg" },
+     { "year": 1949, "event": "中华人民共和国成立", "description": "1949年10月1日，中华人民共和国在北京宣告成立，标志着新中国的诞生。", "image_url": "https://example.com/zgrgfx.jpg" },
+    { "year": 1950, "event": "抗美援朝开始", "description": "1950年，中国人民志愿军开赴朝鲜，开始了抗美援朝战争，以支援朝鲜抵抗美国侵略。", "image_url": "https://example.com/kmyc.jpg" },
+    { "year": 1951, "event": "西藏和平解放", "description": "1951年，西藏和平解放，结束了西藏的封建农奴制度，实现了西藏的和平解放。", "image_url": "https://example.com/xzhpjf.jpg" },
+    { "year": 1952, "event": "土地改革完成", "description": "1952年底，全国土地改革基本完成，彻底废除了封建土地制度，使广大农民获得了土地。", "image_url": "https://example.com/tdggwc.jpg" },
+    { "year": 1953, "event": "一五计划开始", "description": "1953年，中国开始实施第一个五年计划，旨在有计划地进行社会主义建设。", "image_url": "https://example.com/ywjh.jpg" },
+    { "year": 1954, "event": "第一部宪法颁布", "description": "1954年，中华人民共和国第一部宪法颁布，确立了国家的基本政治制度和公民的基本权利义务。", "image_url": "https://example.com/xdfxba.jpg" },
+    { "year": 1955, "event": "和平共处五项原则提出", "description": "1955年，周恩来在万隆会议上提出和平共处五项原则，成为国际关系中的重要准则。", "image_url": "https://th.bing.com/th/id/OIP.3ArfIkuf4a6BNfkmLM8dHAHaFE?rs=1&pid=ImgDetMain" },
+    { "year": 1956, "event": "双百方针提出", "description": "1956年，毛泽东提出'百花齐放，百家争鸣'的方针，鼓励在科学和文化领域内的自由讨论和创新。", "image_url": "https://example.com/shz.jpg" },
+    
+  ],
+      //中国艺术
+      items3: [{ 
+    "year": 1865, 
+    "event": "京剧的崛起", 
+    "description": "京剧在这一时期开始崛起，成为中国传统戏曲的代表。",
+    "image_url": "https://example.com/jingju.jpg"
+  },
+  { 
+    "year": 1866, 
+    "event": "书法艺术继续发展", 
+    "description": "书法艺术在晚清时期继续发展，名家辈出。",
+    "image_url": "https://example.com/shufa.jpg"
+  },
+  { 
+    "year": 1867, 
+    "event": "工艺品流行", 
+    "description": "各种工艺品在民间广泛流行，体现了民间艺术的繁荣。",
+    "image_url": "https://example.com/gyp.jpg"
+  },
+  { 
+    "year": 1868, 
+    "event": "文人画发展", 
+    "description": "文人画在这一时期得到了进一步的发展，风格更加多样化。",
+    "image_url": "https://example.com/wenrenhua.jpg"
+  },
+  { 
+    "year": 1869, 
+    "event": "山水画风出新的风貌", 
+    "description": "山水画风格在这一时期呈现出新的风貌，技法和表现手法更加丰富。",
+    "image_url": "https://example.com/shanshui.jpg"
+  },
+  { 
+    "year": 1870, 
+    "event": "雕刻艺术达到新高度", 
+    "description": "雕刻艺术在这一时期达到了新的高度，作品技艺精湛。",
+    "image_url": "https://example.com/diaoyong.jpg"
+  },
+  { 
+    "year": 1871, 
+    "event": "篆刻名家", 
+    "description": "篆刻艺术在这一时期出现了多位名家，作品风格各异。",
+    "image_url": "https://example.com/zhuanke.jpg"
+  },
+  { 
+    "year": 1872, 
+    "event": "古画研究", 
+    "description": "对古画的研究在这一时期得到了重视，推动了艺术史的发展。",
+    "image_url": "https://example.com/guh.jpg"
+  },
+  { 
+    "year": 1873, 
+    "event": "写意画风", 
+    "description": "写意画风在这一时期受到推崇，强调画家的主观情感表达。",
+    "image_url": "https://example.com/xieyi.jpg"
+  },
+  { 
+    "year": 1874, 
+    "event": "民间工艺", 
+    "description": "民间工艺在这一时期得到了保护和发展，成为文化遗产的一部分。",
+    "image_url": "https://example.com/mjgy.jpg"
+  },
+  { 
+    "year": 1875, 
+    "event": "徐悲鸿出生", 
+    "description": "徐悲鸿是中国现代著名画家和美术教育家，对中国画坛有着深远的影响。",
+    "image_url": "https://th.bing.com/th/id/OIP.c05RyaGS104N1QkbUBWW0QHaHi?rs=1&pid=ImgDetMain"
+  },
+  { 
+    "year": 1876, 
+    "event": "油画引入", 
+    "description": "油画技法在这一时期被引入中国，对中国绘画艺术产生了影响。",
+    "image_url": "https://example.com/youhua.jpg"
+  },
+  { 
+    "year": 1877, 
+    "event": "工艺创新", 
+    "description": "工艺品在这一时期出现了许多创新设计，展现了工艺技术的先进。",
+    "image_url": "https://example.com/gycx.jpg"
+  },
+  { 
+    "year": 1878, 
+    "event": "艺术流派", 
+    "description": "不同的艺术流派在这一时期开始形成，艺术风格更加多元化。",
+    "image_url": "https://example.com/yspl.jpg"
+  },
+  { 
+    "year": 1879, 
+    "event": "文化复兴", 
+    "description": "这一时期出现了文化复兴的潮流，对传统文化进行了重新评价和创新。",
+    "image_url": "https://example.com/whfx.jpg"
+  },
+  { 
+    "year": 1880, 
+    "event": "篆刻流行", 
+    "description": "篆刻艺术在这一时期广受欢迎，成为文人雅士的爱好之一。",
+    "image_url": "https://example.com/zkl.jpg"
+  },
+  { 
+    "year": 1881, 
+    "event": "金石学盛", 
+    "description": "金石学在这一时期达到了鼎盛，对古代文物的研究更加深入。",
+    "image_url": "https://example.com/jins.jpg"
+  },
+  { 
+    "year": 1882, 
+    "event": "艺术学会成立", 
+    "description": "艺术学会在这一时期成立，促进了艺术交流和学术研究。",
+    "image_url": "https://example.com/ysxh.jpg"
+  },
+  { 
+    "year": 1883, 
+    "event": "绘画创新", 
+    "description": "绘画艺术在这一时期出现了许多创新，技法和材料都有所发展。",
+    "image_url": "https://example.com/hcx.jpg"
+  },
+  { 
+    "year": 1884, 
+    "event": "山水画兴", 
+    "description": "山水画在这一时期再次兴盛，成为绘画艺术的重要组成部分。",
+    "image_url": "https://example.com/shanshuix.jpg"
+  },
+  { 
+    "year": 1885, 
+    "event": "文人创作", 
+    "description": "文人在这一时期创作了许多文学作品和艺术作品，体现了文人的精神世界。",
+    "image_url": "https://example.com/wenrenchuangzuo.jpg"
+        },
+       { 
+    "year": 1886, 
+    "event": "新绘画风", 
+    "description": "新绘画风格在1886年开始流行，带来了艺术表现的新趋势。",
+    "image_url": "https://example.com/new_painting_style.jpg"
+  },
+  { 
+    "year": 1887, 
+    "event": "京剧创新", 
+    "description": "京剧在1887年经历了一系列的创新，包括表演形式和舞台技术。",
+    "image_url": "https://example.com/innovative_peking_opera.jpg"
+  },
+  { 
+    "year": 1888, 
+    "event": "书法革新", 
+    "description": "1888年书法艺术迎来了新的风格和技术革新。",
+    "image_url": "https://example.com/calligraphy_innovation.jpg"
+  },
+  { 
+    "year": 1889, 
+    "event": "艺术流派", 
+    "description": "艺术流派在1889年开始形成，展现了多样化的艺术风格。",
+    "image_url": "https://example.com/art_schools.jpg"
+  },
+  { 
+    "year": 1890, 
+    "event": "民间工艺", 
+    "description": "1890年民间工艺得到了进一步的发展和保护。",
+    "image_url": "https://example.com/folk_crafts.jpg"
+  },
+  { 
+    "year": 1891, 
+    "event": "名家崛起", 
+    "description": "1891年多位艺术名家崛起，对后世产生了深远影响。",
+    "image_url": "https://example.com/rising_masters.jpg"
+  },
+  { 
+    "year": 1892, 
+    "event": "山水画兴", 
+    "description": "山水画在1892年再次兴盛，成为绘画艺术的重要组成部分。",
+    "image_url": "https://example.com/landscape_painting.jpg"
+  },
+  { 
+    "year": 1893, 
+    "event": "画坛风潮", 
+    "description": "1893年画坛出现了新的风格和流派，引领了艺术新潮流。",
+    "image_url": "https://example.com/art_trends.jpg"
+  },
+  { 
+    "year": 1894, 
+    "event": "油画传入", 
+    "description": "油画技法在1894年开始传入中国，对中国绘画艺术产生了影响。",
+    "image_url": "https://example.com/oil_painting.jpg"
+  },
+  { 
+    "year": 1895, 
+    "event": "学术研究", 
+    "description": "1895年艺术和文化的学术研究得到了重视和发展。",
+    "image_url": "https://example.com/academic_research.jpg"
+  },
+  { 
+    "year": 1896, 
+    "event": "艺术展览", 
+    "description": "艺术展览在1896年成为艺术家展示作品和交流思想的重要平台。",
+    "image_url": "https://example.com/art_exhibition.jpg"
+  },
+  { 
+    "year": 1897, 
+    "event": "新剧启蒙", 
+    "description": "新剧启蒙运动在1897年推动了戏剧艺术的现代化。",
+    "image_url": "https://example.com/new_drama.jpg"
+  },
+  { 
+    "year": 1898, 
+    "event": "百日维新影响艺术", 
+    "description": "1898年的百日维新是中国近代史上一次重要的政治改革运动。",
+    "image_url": "https://example.com/hundred_days_reform.jpg"
+  },
+  { 
+    "year": 1899, 
+    "event": "古画鉴赏", 
+    "description": "古画鉴赏在1899年成为文人雅士的重要活动，推动了艺术史研究。",
+    "image_url": "https://example.com/ancient_painting_appreciation.jpg"
+  },
+  { 
+    "year": 1900, 
+    "event": "美术学院", 
+    "description": "1900年美术学院的建立，为中国培养了大批艺术人才。",
+    "image_url": "https://example.com/fine_art_academy.jpg"
+  },
+  { 
+    "year": 1901, 
+    "event": "绘画学校", 
+    "description": "绘画学校在1901年成立，系统地传授绘画技艺和理论。",
+    "image_url": "https://example.com/painting_school.jpg"
+  },
+  { 
+    "year": 1902, 
+    "event": "艺术启蒙", 
+    "description": "艺术启蒙运动在1902年推动了公众对艺术的认识和欣赏。",
+    "image_url": "https://example.com/art_enlightenment.jpg"
+  },
+  { 
+    "year": 1903, 
+    "event": "新文艺风成为新的趋势", 
+    "description": "新文艺风在1903年成为文学和艺术领域的新趋势。",
+    "image_url": "https://example.com/new_literary_art.jpg"
+  },
+  { 
+    "year": 1904, 
+    "event": "雕刻复兴", 
+    "description": "雕刻艺术在1904年经历了一次复兴，出现了许多杰出的作品。",
+    "image_url": "https://example.com/sculpture_renaissance.jpg"
+  },
+  { 
+    "year": 1905, 
+    "event": "艺术现代化", 
+    "description": "艺术现代化在1905年成为主流，中国艺术开始融入世界艺术潮流。",
+    "image_url": "https://example.com/modern_art.jpg"
+  },
+  { 
+    "year": 1906, 
+    "event": "西画传入", 
+    "description": "西方绘画技法在1906年进一步传入中国，影响了中国绘画的发展。",
+    "image_url": "https://example.com/western_painting.jpg"
+        },
+       { 
+    "year": 1907, 
+    "event": "新文人画兴", 
+    "description": "新文人画在1907年兴起，融合传统与现代，展现了新的艺术风格。",
+    "image_url": "https://example.com/new_literati_painting.jpg"
+  },
+  { 
+    "year": 1908, 
+    "event": "京剧改良", 
+    "description": "1908年京剧经历了改良，增加了新的元素和表演技巧。",
+    "image_url": "https://example.com/peking_opera_reform.jpg"
+  },
+  { 
+    "year": 1909, 
+    "event": "油画传入", 
+    "description": "油画在1909年进一步传入中国，影响了中国绘画艺术的发展。",
+    "image_url": "https://example.com/oil_painting_introduction.jpg"
+  },
+  { 
+    "year": 1910, 
+    "event": "书法创新", 
+    "description": "1910年书法艺术迎来了新的风格和技术革新。",
+    "image_url": "https://example.com/calligraphy_innovation.jpg"
+  },
+  { 
+    "year": 1911, 
+    "event": "辛亥革命", 
+    "description": "辛亥革命在1911年爆发，结束了清朝统治，开启了中国的共和时代。",
+    "image_url": "https://example.com/xinhai_revolution.jpg"
+  },
+  { 
+    "year": 1912, 
+    "event": "国画振兴", 
+    "description": "1912年国画得到了振兴，传统艺术得到了新的发展机遇。",
+    "image_url": "https://example.com/national_painting_revival.jpg"
+  },
+  { 
+    "year": 1913, 
+    "event": "文艺复兴", 
+    "description": "1913年文艺复兴运动推动了文学和艺术的创新与发展。",
+    "image_url": "https://example.com/renaissance_of_arts.jpg"
+  },
+  { 
+    "year": 1914, 
+    "event": "艺术集会", 
+    "description": "1914年艺术集会成为了艺术家交流和展示作品的重要活动。",
+    "image_url": "https://example.com/art_gatherings.jpg"
+  },
+  { 
+    "year": 1915, 
+    "event": "现代文学", 
+    "description": "1915年现代文学开始兴起，反映了社会变革和新思想。",
+    "image_url": "https://example.com/modern_literature.jpg"
+  },
+  { 
+    "year": 1916, 
+    "event": "绘画研究", 
+    "description": "1916年绘画研究得到了重视，推动了绘画艺术的发展。",
+    "image_url": "https://example.com/painting_research.jpg"
+  },
+  { 
+    "year": 1917, 
+    "event": "美术运动", 
+    "description": "1917年美术运动推动了美术教育和艺术创作的现代化。",
+    "image_url": "https://example.com/fine_art_movement.jpg"
+  },
+  { 
+    "year": 1918, 
+    "event": "文化启蒙", 
+    "description": "1918年文化启蒙运动促进了新思想和新文化的传播。",
+    "image_url": "https://example.com/cultural_enlightenment.jpg"
+  },
+  { 
+    "year": 1919, 
+    "event": "五四运动", 
+    "description": "1919年五四运动是中国近代史上一次重要的思想解放和文化运动。",
+    "image_url": "https://example.com/may_fourth_movement.jpg"
+  },
+  { 
+    "year": 1920, 
+    "event": "现代诗歌", 
+    "description": "1920年现代诗歌开始兴起，成为表达新思想和情感的重要文学形式。",
+    "image_url": "https://example.com/modern_poetry.jpg"
+  },
+  { 
+    "year": 1921, 
+    "event": "艺术批评", 
+    "description": "1921年艺术批评成为推动艺术发展和创新的重要力量。",
+    "image_url": "https://example.com/art_criticism.jpg"
+  },
+  { 
+    "year": 1922, 
+    "event": "新文化运动", 
+    "description": "1922年新文化运动继续推动中国社会的文化变革和思想更新。",
+    "image_url": "https://example.com/new_culture_movement.jpg"
+  },
+  { 
+    "year": 1923, 
+    "event": "美术社团", 
+    "description": "1923年美术社团的成立促进了艺术家之间的交流与合作。",
+    "image_url": "https://example.com/art_associations.jpg"
+  },
+  { 
+    "year": 1924, 
+    "event": "文人画潮", 
+    "description": "1924年文人画潮再次兴起，成为绘画艺术的一个重要流派。",
+    "image_url": "https://example.com/literati_painting_trend.jpg"
+  },
+  { 
+    "year": 1925, 
+    "event": "国画展览", 
+    "description": "1925年国画展览成为展示中国传统绘画艺术的重要平台。",
+    "image_url": "https://example.com/national_painting_exhibition.jpg"
+  },
+  { 
+    "year": 1926, 
+    "event": "艺术改革", 
+    "description": "1926年艺术改革运动推动了艺术领域的创新和现代化。",
+    "image_url": "https://example.com/art_reform.jpg"
+  },
+  { 
+    "year": 1927, 
+    "event": "左翼文艺", 
+    "description": "1927年左翼文艺运动倡导文艺为社会变革服务，产生了一批有影响力的作品。",
+    "image_url": "https://example.com/left_wing_arts.jpg"
+        },
+      { 
+    "year": 1928, 
+    "event": "新文化运动", 
+    "description": "1928年，创造社和太阳社作家积极倡导“革命文学”，推动了无产阶级革命文学运动的发展。[^54^]",
+    "image_url": "https://example.com/new_culture_movement_1928.jpg"
+  },
+  { 
+    "year": 1929, 
+    "event": "美术展览", 
+    "description": "1929年4月由国民政府教育部在上海普育堂举主办“首届全国美术展览会”，是中国历史上首次全国性美术展会。[^52^]",
+    "image_url": "https://example.com/art_exhibition_1929.jpg"
+  },
+  { 
+    "year": 1930, 
+    "event": "绘画革新", 
+    "description": "1930年，上海的文化期刊如雨后春笋般涌现，左翼文艺界有了广大的空间，绘画艺术得到了新的发展。[^54^]",
+    "image_url": "https://example.com/painting_renovation_1930.jpg"
+  },
+  { 
+    "year": 1931, 
+    "event": "国画学院", 
+    "description": "1931年，国画学院的建立促进了国画艺术的教育和传承。",
+    "image_url": "https://example.com/national_painting_academy_1931.jpg"
+  },
+  { 
+    "year": 1932, 
+    "event": "左翼文艺", 
+    "description": "1932年至1935年左翼文艺运动蓬勃开展，催生了大批左翼文艺作品。[^68^]",
+    "image_url": "https://example.com/left_wing_arts_1932.jpg"
+  },
+  { 
+    "year": 1933, 
+    "event": "现代主义", 
+    "description": "1933年，世纪中期现代主义在美国发展，影响了全球的设计风格，包括建筑设计、室内设计等。[^72^]",
+    "image_url": "https://pic2.zhimg.com/v2-bd450f34eaf70139f834fb86ceeba7f5_b.jpg"
+  },
+  { 
+    "year": 1934, 
+    "event": "新文人画", 
+    "description": "1934年，新文人画运动继续发展，融合传统与现代，展现了新的艺术风格。",
+    "image_url": "https://th.bing.com/th/id/R.39a24a01fb84d8da995500fc9902298c?rik=5lu4CeomILJN%2bg&riu=http%3a%2f%2fdownload.zhuokearts.com%2fuserupload%2f2014%2f3%2f12%2f041502jrli4.jpg&ehk=sI9wCDgy1FlH72%2f5bJsFVFQVdsDqkrMi%2brHijlcQVB8%3d&risl=&pid=ImgRaw&r=0"
+  },
+  { 
+    "year": 1935, 
+    "event": "抗日文艺", 
+    "description": "1935年，全国文艺界热烈响应共产党号召，主张建立抗日民族统一战线，产生了一批抗日文艺作品。[^63^]",
+    "image_url": "https://example.com/anti_japanese_arts_1935.jpg"
+  },
+  { 
+    "year": 1936, 
+    "event": "国民政府", 
+    "description": "1936年，国民政府完成了货币本位的制度构建，正式由银本位制转向金本位制。[^77^]",
+    "image_url": "https://example.com/national_government_1936.jpg"
+  },
+  { 
+    "year": 1937, 
+    "event": "抗战爆发", 
+    "description": "1937年7月7日，日本军国主义者对中国发动了全面的侵略战争，中国人从此奋起进行全民族抗战。[^60^]",
+    "image_url": "https://example.com/anti_japanese_war_1937.jpg"
+  },
+  { 
+    "year": 1938, 
+    "event": "美术抗战", 
+    "description": "1938年，美术界积极参与抗战，通过艺术作品表达抗日情绪和民族精神。",
+    "image_url": "https://example.com/art_anti_war_1938.jpg"
+  },
+  { 
+    "year": 1939, 
+    "event": "战地艺术", 
+    "description": "1939年，战地艺术作品涌现，记录和反映了战争的残酷和人民的抗争。",
+    "image_url": "https://example.com/warfront_art_1939.jpg"
+  },
+  { 
+    "year": 1940, 
+    "event": "艺术创作", 
+    "description": "1940年，艺术家们在战争背景下创作了大量反映时代精神和社会现实的作品。",
+    "image_url": "https://example.com/art_creation_1940.jpg"
+  },
+  { 
+    "year": 1941, 
+    "event": "油画发展", 
+    "description": "1941年，油画艺术在中国继续发展，成为表达抗战精神的重要艺术形式。",
+    "image_url": "https://example.com/oil_painting_development_1941.jpg"
+  },
+  { 
+    "year": 1942, 
+    "event": "文艺复兴", 
+    "description": "1942年，文艺复兴运动推动了文学和艺术的创新与发展。",
+    "image_url": "https://example.com/renaissance_of_arts_1942.jpg"
+  },
+  { 
+    "year": 1943, 
+    "event": "艺术教育", 
+    "description": "1943年，艺术教育在战时背景下得到了重视，培养了一批新的艺术人才。",
+    "image_url": "https://example.com/art_education_1943.jpg"
+  },
+  { 
+    "year": 1944, 
+    "event": "战地剧团", 
+    "description": "1944年，战地剧团在前线和后方演出，通过戏剧形式鼓舞士气和宣传抗战。",
+    "image_url": "https://example.com/warfront_theatre_1944.jpg"
+  },
+  { 
+    "year": 1945, 
+    "event": "文化复兴", 
+    "description": "1945年，随着抗战胜利的临近，文化艺术领域出现了复兴的迹象，人们开始重建文化生活。",
+    "image_url": "https://example.com/cultural_renaissance_1945.jpg"
+  },
+  { 
+    "year": 1946, 
+    "event": "新文学潮", 
+    "description": "1946年，新文学潮流继续发展，文学作品开始反映战后社会的复杂性和多样性。",
+    "image_url": "https://example.com/new_literary_trend_1946.jpg"
+  },
+  { 
+    "year": 1947, 
+    "event": "文艺展览", 
+    "description": "1947年，文艺展览活动增多，展示了战后文艺创作的新成果和新趋势。",
+    "image_url": "https://example.com/literary_art_exhibition_1947.jpg"
+  },
+  { 
+    "year": 1948, 
+    "event": "抗战艺术", 
+    "description": "1948年，抗战艺术作品继续被创作和展出，记录了抗战的历史和人民的抗争。",
+    "image_url": "https://th.bing.com/th/id/OIP.yuzg4mo0iISKdtbnDynkWAHaJl?rs=1&pid=ImgDetMain"
+        },
+      { 
+    "year": 1949, 
+    "event": "新中国成立", 
+    "description": "1949年10月1日，中华人民共和国成立，标志着中国历史新纪元的开始。",
+    "image_url": "https://example.com/founding_of_prc.jpg"
+  },
+  { 
+    "year": 1950, 
+    "event": "人民画派", 
+    "description": "1950年，人民画派开始形成，强调艺术为人民服务，反映社会主义建设和劳动人民生活。",
+    "image_url": "https://example.com/peoples_school_of_painting.jpg"
+  },
+  { 
+    "year": 1951, 
+    "event": "艺术创作", 
+    "description": "1951年，艺术创作在新中国蓬勃发展，艺术家们创作了大量反映新时代精神的作品。",
+    "image_url": "https://example.com/art_creation_1951.jpg"
+  },
+  { 
+    "year": 1952, 
+    "event": "文艺座谈", 
+    "description": "1952年，文艺界举行多次座谈会，讨论文艺如何更好地服务于社会主义建设。",
+    "image_url": "https://example.com/literary_discussion_1952.jpg"
+  },
+  { 
+    "year": 1953, 
+    "event": "油画推广", 
+    "description": "1953年，油画艺术在新中国得到推广，成为重要的艺术表现形式之一。",
+    "image_url": "https://example.com/promotion_of_oil_painting.jpg"
+  },
+  { 
+    "year": 1954, 
+    "event": "美术改革", 
+    "description": "1954年，美术改革运动推动了美术教育和艺术创作的现代化，强调艺术的社会主义方向。",
+    "image_url": "https://example.com/art_reform_1954.jpg"
+  },
+  { 
+    "year": 1955, 
+    "event": "文艺新风", 
+    "description": "1955年，文艺新风运动提倡艺术创新，鼓励艺术家创作具有民族特色和时代精神的作品。",
+    "image_url": "https://example.com/new_trends_in_arts.jpg"
+  },
+  { 
+    "year": 1956, 
+    "event": "百花齐放", 
+    "description": "1956年，'百花齐放，百家争鸣'方针提出，鼓励文艺领域的多样性和学术讨论的自由。",
+    "image_url": "https://example.com/hundred_flowers_campaign.jpg"
+  },],
+  
       dialogVisible: false,  // 控制 Dialog 显示/隐藏
       selectedItem: '',  // 选中的事件
       dialogVisible2: true, // 控制对话框的显示
@@ -240,14 +965,18 @@ export default {
       itemshuang:[],//人物事件
       eventDataother: [],//其他事件详情
       eventDataperson: [],//人物事件详情
-      eventDatayear:[],//某年份（某年龄）详情事件
+      eventDatayear: [],//某年份（某年龄）详情事件
+      isImageLoaded: true, // 控制图片是否显示
     }
   },
   methods: {
+     handleImageError() {
+      this.isImageLoaded = false; // 图片加载失败时隐藏
+    },
   //获取人物事件标题
     fetch_person_titles() {
       console.log(this.items);
-    //TODO:api/v1/life/person_event_titles 
+    //TODO:api/v1/life/person_event_titles
     //axios.get(`${API_BASE_URL}/m2/5614391-5293614-default/246996370`)
     axios.get(`${ API_BASE_URL }/api/v1/life/person_event_titles`)
         .then(response => {
@@ -258,8 +987,9 @@ export default {
             result.forEach(item => {
               const index = item.year - 1865;
               console.log("index", index);
-              this.items2[index] = item.title;
+              this.items2[index].event = item.title;
             })
+            console.log(this.items2);
           } else {
             console.error('获取事件数据失败');
           }
@@ -279,10 +1009,10 @@ export default {
     result.forEach(item => {
    switch (item.classify) {
     case 0:
-      this.itemsChineseHis.push(item.title);
+      //this.itemsChineseHis.push(item.title);
       break;
     case 1:
-      this.itemsChineseArt.push(item.title);
+      //this.itemsChineseArt.push(item.title);
       break;
     case 2:
       this.itemsEurHis.push(item.title);
@@ -295,8 +1025,8 @@ export default {
     }
     });
 
-    console.log("itemsChineseHis:", this.itemsChineseHis);
-   console.log("itemsChineseArt:", this.itemsChineseArt);
+    //console.log("itemsChineseHis:", this.itemsChineseHis);
+   //console.log("itemsChineseArt:", this.itemsChineseArt);
    console.log("itemsEurHis:", this.itemsEurHis);
    console.log("itemsEurArt:", this.itemsEurArt);
     } catch (error) {
@@ -319,7 +1049,29 @@ export default {
      this.fetch_person_titles();
     },
     //点击其他事件或人物事件标题
-    handleClick(item) {
+    handleClick(item,index) {
+      console.log("点击了", item);
+      // 当点击事件时，打开对话框并显示相关内容
+       this.selectedItem = item.event;
+       this.dialogVisible = true;
+      console.log(this.dialogVisible);
+      document.body.style.overflow = 'auto'; // 禁止滚动
+      if (this.showNewContainer) {
+        this.fetch_person_event_details();
+      }
+      else {       
+        //this.fetch_other_event_details();
+        const selectedEvent = this.items[index]; // 获取点击的事件对象
+        console.log(selectedEvent.image_url);
+    this.eventDataother = {
+      event: selectedEvent.description,  // 事件的描述
+      work: selectedEvent.image_url // 事件图片的 URL
+    };
+        console.log(this.eventDataother);   
+      }
+      
+    },
+ handleClick2(item,index) {
       console.log("点击了", item);
       // 当点击事件时，打开对话框并显示相关内容
        this.selectedItem = item;
@@ -330,11 +1082,31 @@ export default {
         this.fetch_person_event_details();
       }
       else {       
+        //this.fetch_other_event_details();
+    const selectedEvent = this.items3[index]; // 获取点击的事件对象
+    this.eventDataother = {
+      event: selectedEvent.description,  // 事件的描述
+      work: selectedEvent.image_url // 事件图片的 URL
+    };
+        console.log(this.eventDataother);   
+      }
+      
+    },
+    handleClick3(item,index) {
+      console.log("点击了", item);
+      // 当点击事件时，打开对话框并显示相关内容
+       this.selectedItem = item;
+       this.dialogVisible = true;
+      console.log(this.dialogVisible);
+      document.body.style.overflow = 'auto'; // 禁止滚动
+      if (this.showNewContainer) {
+        this.fetch_person_event_details();
+      }
+      else {
         this.fetch_other_event_details();
       }
       
     },
-
     //获取其他事件详情数据
     fetch_other_event_details() {
     //TODO:api/v1/life/other_event_details
@@ -358,7 +1130,10 @@ export default {
     fetch_person_event_details() { 
       //TODO:api/v1/life/person_event_details
       //axios.get(`${API_BASE_URL}/m2/5614391-5293614-default/246996940`, { params: { title: this.selectedItem } })
-      axios.get(`${ API_BASE_URL }/api/v1/life/person_event_details`,{ params: { title: this.selectedItem } })  
+      console.log("要传的数据", this.selectedItem);
+      axios.get(`${ API_BASE_URL }/api/v1/life/person_event_details`, {
+  params: { title: this.selectedItem }
+})
         .then(response => {
           if (response.data.state === 200) {
             
@@ -381,8 +1156,9 @@ export default {
        axios.get(`${ API_BASE_URL }/api/v1/life/year_details`,{ params: { year: this.selectedYear } })    
         .then(response => {
           if (response.data.state === 200) {
-            
-             this.eventDatayear= response.data.data;
+           
+            this.eventDatayear = response.data.data;
+            console.log("943",this.eventDatayear);
              //this.eventDataperson.event = this.eventDataperson.event.replace(/\n/g, "<br>");
           } else {
             console.error('获取人物在某年份（某年龄）详情事件失败');
@@ -452,8 +1228,8 @@ html, body {
   justify-content: flex-start; /* 向左对齐 */
   align-items: center; /* 可选：垂直居中对齐 */
   width:386%;
-  height: 1000px; /* 设置更大的高度 */
-  transform: translate(-13.97%, -24%);
+  height: 700px; /* 设置更大的高度 */
+  transform: translate(-13.97%, -20%);
   flex-direction: row;
   background-color: #E2DCCC; 
 }
@@ -465,7 +1241,7 @@ html, body {
   align-items: center; /* 可选：垂直居中对齐 */
   width: 386%;
   height: 500px; /* 设置更大的高度 */
-  transform: translate(-13.95%, 87%);
+  transform: translate(-13.95%, 90%);
   padding:0px;
   
 }
@@ -491,8 +1267,10 @@ html, body {
   font-family: "KaiTi", "楷体", serif; /* 设置为楷书字体 */
   padding:0px;
   writing-mode: vertical-rl; /* 设置文字竖排 */
-  height:420px; /* 设置固定高度 */
-  margin-top: 60px;
+  height:520px; /* 设置固定高度 */
+  margin-top: 0px;
+  position: relative; /* 设置为相对定位 */
+  top: 130px; 
 }
 
 .header2{
@@ -503,8 +1281,11 @@ html, body {
   font-family: "KaiTi", "楷体", serif; /* 设置为楷书字体 */
   padding: 0;
   writing-mode: vertical-rl; /* 设置文字竖排 */
-  height: 420px; /* 设置固定高度 */
-  margin-top: 60px;
+  height: 520px; /* 设置固定高度 */
+  margin-top: 0px;
+  position: relative; /* 设置为相对定位 */
+  top: 130px; 
+
 }
 .subheader{
 background-color:#D8D2C2;
@@ -526,7 +1307,7 @@ text-align: center;
   text-align: center;
   padding:0;
   margin-bottom: 10px;
-  height: 350px; /* 设置固定高度 */
+  height: 250px; /* 设置固定高度 */
 }
 .section2 {
   width: 100%;
@@ -534,7 +1315,7 @@ text-align: center;
   text-align: center;
   padding:0;
   margin-bottom: 10px;
-  height: 350px; /* 设置固定高度 */
+  height: 250px; /* 设置固定高度 */
 }
 .grid {
   display: grid;
@@ -545,6 +1326,7 @@ text-align: center;
   display: grid;
   grid-template-columns: repeat(93, auto); /* 根据需要调整列数 */
   gap: 0; /* 确保列之间没有间隙 */
+  
 }
 .grid-item {
   background-color: #E2DCCC;
@@ -554,10 +1336,11 @@ text-align: center;
   font-size: 20px;
   font-family: "KaiTi", "楷体", serif; 
   font-weight: bold;
+  height: 250px;
 }
 .special-style {
   background-color:#DAB09F;
-  padding: 5px;
+  padding-right:5px;
   text-align: center;
   writing-mode: vertical-rl; /* 设置文字竖排 */
   font-size: 20px;
@@ -566,7 +1349,7 @@ text-align: center;
   font-weight: bold;
    /*border: 2px solid #333;*/
   border-radius: 5px; /* 设置圆角，如果需要方角可以删除此行 */
-   margin:0px; 
+  margin:0px; 
 }
 .grid-item2 {
   background-color:#AFB4AD;
@@ -576,6 +1359,7 @@ text-align: center;
   font-size: 20px;
   font-family: "KaiTi", "楷体", serif; 
   font-weight: bold;
+  height: 250px;
 }
 
 .charts{
