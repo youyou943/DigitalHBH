@@ -2,18 +2,19 @@
   <div class="work-detail-container">
     <el-row :gutter="40">
       <!-- 左侧作品展示 -->
-      <el-col :span="14">
+      <el-col :span="16">
         <div class="image-container">
           <el-image 
             :src="currentWork.work" 
             fit="contain"
             :preview-src-list="[currentWork.work]"
+            class="work-display-image"
           />
         </div>
       </el-col>
 
       <!-- 右侧作品信息 -->
-      <el-col :span="10">
+      <el-col :span="8">
         <div class="work-info">
           <h1 class="work-title">{{ currentWork.workname }}</h1>
           
@@ -95,27 +96,56 @@ onMounted(() => {
   padding: 40px;
   max-width: 1400px;
   margin: 0 auto;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background-color: #f9f4e6;
 }
 
 .image-container {
-  background: #f5f7fa;
-  padding: 20px;
+  background: #fff9e6;
+  padding: 15px;
   border-radius: 8px;
-  min-height: 500px;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 15px rgba(185, 128, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d4b106;
+}
+
+.work-display-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.image-container:hover .work-display-image {
+  transform: scale(1.02);
 }
 
 .work-info {
-  padding: 20px;
+  padding: 30px;
+  background: #fff9e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(185, 128, 0, 0.1);
+  height: 80vh;
+  overflow-y: auto;
+  width: 400px;
+  margin: 0 auto;
+  border: 1px solid #d4b106;
 }
 
 .work-title {
   margin-bottom: 30px;
-  color: #303133;
+  color: #8b4513;
   font-size: 24px;
   font-weight: bold;
+  font-family: "楷体", "STKaiti", serif;
+  letter-spacing: 2px;
 }
 
 .work-description {
@@ -124,30 +154,84 @@ onMounted(() => {
 
 .work-description h3 {
   margin-bottom: 15px;
-  color: #303133;
+  color: #8b4513;
   font-size: 18px;
+  font-family: "楷体", "STKaiti", serif;
+  letter-spacing: 1px;
 }
 
 .work-description p {
   line-height: 1.8;
-  color: #606266;
+  color: #5c3f2e;
   text-align: justify;
+  font-family: "楷体", "STKaiti", serif;
+  letter-spacing: 1px;
 }
 
 .back-button {
   margin-top: 30px;
+  background-color: #8b4513 !important;
+  border-color: #8b4513 !important;
+  font-family: "楷体", "STKaiti", serif;
 }
 
 :deep(.el-descriptions) {
   margin-top: 20px;
+  --el-border-color: #d4b106;
 }
 
 :deep(.el-descriptions__label) {
   width: 120px;
   font-weight: bold;
+  color: #8b4513;
+  font-family: "楷体", "STKaiti", serif;
+  background-color: rgba(139, 69, 19, 0.05);
 }
 
 :deep(.el-descriptions__content) {
   line-height: 1.6;
+  color: #5c3f2e;
+  font-family: "楷体", "STKaiti", serif;
+}
+
+.work-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.work-info::-webkit-scrollbar-track {
+  background: rgba(139, 69, 19, 0.1);
+  border-radius: 3px;
+}
+
+.work-info::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 3px;
+}
+
+.work-info::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.3);
+}
+
+/* 响应式布局调整 */
+@media screen and (max-width: 1400px) {
+  .work-info {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .work-info {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .work-info {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    min-height: 500px;
+    margin-top: 20px;
+  }
 }
 </style>

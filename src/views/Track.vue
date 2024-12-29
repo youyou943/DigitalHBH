@@ -89,7 +89,7 @@
           class="place-button" 
           icon="el-icon-location" 
           @click="fetchPlaceDetails(place.place, place.order)">
-          <img src="/biaodi.png" alt="Place Marker" class="place-icon" />
+          <img src="/biaodi1.png" alt="Place Marker" class="place-icon" />
         </el-button>
       </div>
     </el-tooltip>
@@ -99,6 +99,7 @@
       v-model="dialogVisible"
       title="作品详情" 
       width="40%"
+      style="margin-top: 0px;"
     >
       <div v-if="placeDetails">
         <p><strong>年份：</strong>{{ placeDetails.year }}</p>
@@ -437,8 +438,8 @@ export default {
 
 /* 地点标记标的样式 */
 .place-icon {
-  width: 30px;  /* 你可以根据需要调整图片大小 */
-  height: 30px;
+  width: 70px;  /* 你可以根据需要调整图片大小 */
+  height: 50px;
 }
 
 /* 图片展示样式 */

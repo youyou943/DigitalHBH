@@ -20,4 +20,14 @@ export const getWorksByClassify = (classify) => {
     return workApi.get('/classify', {
         params: { classify }
     })
+}
+
+// 获取指定时期的作品
+export function getWorksByTime(classify, time) {
+    return workApi.get('/time', {
+        params: {
+            classify,
+            time
+        }
+    })
 } 
