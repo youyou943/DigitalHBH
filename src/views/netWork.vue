@@ -30,7 +30,7 @@
 import { ref, onMounted } from 'vue'
 import * as d3 from 'd3'
 
-const graphRef = ref(null)
+const graphRef = ref('elder')
 
 const filters = ref([
   { id: 'all', name: '全部', active: true },
@@ -49,44 +49,214 @@ const ageFilters = ref([
 const graphData = {
   nodes: [
     { id: '黄宾虹', group: 'center', color: '#c15c37' },
-    { id: '王氏', group: 'family', color: '#6b7b94', age: 'childhood' },
-    { id: '马从香', group: 'family', color: '#6b7b94', age: 'childhood' },
-    { id: '钱谦益', group: 'family', color: '#6b7b94', age: 'childhood' },
-    { id: '高孝龙', group: 'family', color: '#6b7b94', age: 'youth' },
-    { id: '邢钧', group: 'family', color: '#6b7b94', age: 'youth' },
-    { id: '徐显臣', group: 'family', color: '#6b7b94', age: 'youth' },
-    { id: '黄辉', group: 'family', color: '#6b7b94', age: 'adult' },
-    { id: '沈思孝', group: 'family', color: '#6b7b94', age: 'adult' },
-    { id: '马时可', group: 'family', color: '#6b7b94', age: 'adult' },
-    { id: '王士琦', group: 'art', color: '#6b7b94', age: 'middle' },
-    { id: '陈所益', group: 'art', color: '#6b7b94', age: 'middle' },
-    { id: '田一儒', group: 'art', color: '#6b7b94', age: 'middle' },
-    { id: '区大相', group: 'art', color: '#6b7b94', age: 'middle' },
-    { id: '吴正志', group: 'art', color: '#6b7b94', age: 'elder' },
-    { id: '王嘉会', group: 'art', color: '#6b7b94', age: 'elder' },
-    { id: '朱国祯', group: 'art', color: '#6b7b94', age: 'elder' },
-    { id: '沈一贯', group: 'art', color: '#6b7b94', age: 'elder' },
-    { id: '顾宪成', group: 'art', color: '#6b7b94', age: 'elder' },
+    { id: '黄定华', relation: '父亲', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '方氏', relation: '母亲', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '洪四果', relation: '原配夫人', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '宋若婴', relation: '侧室', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄用明', relation: '长子', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄映宇', relation: '次子', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄鑑', relation: '三子', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄映家', relation: '女儿', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄乃耐', relation: '妹妹', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄恒华', relation: '四叔', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄元秀', relation: '弟弟', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄映绮', relation: '堂妹', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄昂青', relation: '侄子', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄警吾', relation: '侄子', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄映芬', relation: '侄女', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄宾日', relation: '侄孙', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄高志', relation: '侄孙', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '江钟羲', relation: '侄女婿', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '赵志钧', relation: '女婿', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄高勤', relation: '孙女', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '黄努卫', relation: '外孙', group: 'family', age: 'elder', color: '#6b7b94' },
+    { id: '李灼先', relation: '启蒙老师', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '李咏棠', relation: '启蒙老师', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '程建', relation: '四书五经老师', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '赵经田', relation: '四书五经老师', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '应芹生', relation: '四书五经老师', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '董其昌', relation: '儿时喜爱的作者', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '查士标', relation: '儿时喜爱的作者', group: 'art', age: 'childhood', color: '#6b7b94' },
+    { id: '陈春帆', relation: '写真老师', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '汪仲伊', relation: '国学老师', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '郑雪珊', relation: '山水老师', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '陈崇光', relation: '花鸟老师', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '程桓生', relation: '同事', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '赵穆', relation: '篆刻先生', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '许崇贵', relation: '知县', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '黄牧甫', relation: '好友', group: 'art', age: 'youth', color: '#6b7b94' },
+    { id: '郑搢书', relation: '作垦同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '许承尧', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '江炜', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '陈去病', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '江律本', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '黄节', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '邓实', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '沈曾植', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '冯煦', relation: '革命同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '蔡守', relation: '书画之交兼同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '王一亭', relation: '书画之交兼同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '柳亚子', relation: '书画之交兼同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '高天梅', relation: '书画之交兼同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '潘飞声', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '吴昌硕', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '徐积余', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '周梦坡', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '徐仲可', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '胡朴庵', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '童心安', relation: '杏花楼共雅集', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '王云五', relation: '同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '李叔同', relation: '同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '邹安', relation: '同事', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '王国维', relation: '金石之交', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '曾熙', relation: '论艺朋友', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '罗振玉', relation: '好友', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '张虹', relation: '以画会友', group: 'art', age: 'adult', color: '#6b7b94' },
+    { id: '王秋湄', relation: '研究同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '高剑父', relation: '研究同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '陈树人', relation: '研究同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '蔡哲夫', relation: '研究同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '邓尔雅', relation: '造访之交', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '张小楼', relation: '展览会同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '钱化佛', relation: '展览会同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '陈巨来', relation: '同事好友', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '汪声友', relation: '补习所同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '徐悲鸿', relation: '提携恩师', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '陶冷月', relation: '好友', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '田边华', relation: '东游之交', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '叶恭绰', relation: '同事', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '赵含英', relation: '学生', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '顾飞', relation: '学生', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '朱砚', relation: '学生', group: 'art', age: 'middle', color: '#6b7b94' },
+    { id: '虞澹涵', relation: '助赈同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '唐冠玉', relation: '助赈同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '张大千', relation: '白马湖之交', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '经亨颐', relation: '白马湖之交', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '方旭', relation: '腴霜柑阁共雅集', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '龚道耕', relation: '腴霜柑阁共雅集', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '贺天健', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '谢海燕', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '谢公展', relation: '游会之交', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '王济远', relation: '游会之交', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '何香凝', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '蔡元培', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '夏剑丞', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '孙海波', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '罗复堪', relation: '同事', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '郭味蕖', relation: '学生', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '傅雷', relation: '画展共事好友', group: 'art', age: 'elder', color: '#6b7b94' },
+    { id: '裘柱常夫妇', relation: '画展共事好友', group: 'art', age: 'elder', color: '#6b7b94' },
   ],
   links: [
-    { source: '黄宾虹', target: '王氏', type: 'family', age: 'childhood', relation: '母亲' },
-    { source: '黄宾虹', target: '马从香', type: 'family', age: 'childhood', relation: '祖父' },
-    { source: '黄宾虹', target: '钱谦益', type: 'family', age: 'childhood', relation: '叔父' },
-    { source: '黄宾虹', target: '高孝龙', type: 'family', age: 'youth', relation: '兄长' },
-    { source: '黄宾虹', target: '邢钧', type: 'family', age: 'youth', relation: '族兄' },
-    { source: '黄宾虹', target: '徐显臣', type: 'family', age: 'youth', relation: '表兄' },
-    { source: '黄宾虹', target: '黄辉', type: 'family', age: 'adult', relation: '堂兄' },
-    { source: '黄宾虹', target: '沈思孝', type: 'family', age: 'adult', relation: '姐夫' },
-    { source: '黄宾虹', target: '马时可', type: 'family', age: 'adult', relation: '姨父' },
-    { source: '黄宾虹', target: '王士琦', type: 'art', age: 'middle', relation: '师父' },
-    { source: '黄宾虹', target: '陈所益', type: 'art', age: 'middle', relation: '师兄' },
-    { source: '黄宾虹', target: '田一儒', type: 'art', age: 'middle', relation: '师叔' },
-    { source: '黄宾虹', target: '区大相', type: 'art', age: 'middle', relation: '挚友' },
-    { source: '黄宾虹', target: '吴正志', type: 'art', age: 'elder', relation: '师友' },
-    { source: '黄宾虹', target: '王嘉会', type: 'art', age: 'elder', relation: '同门' },
-    { source: '黄宾虹', target: '朱国祯', type: 'art', age: 'elder', relation: '好友' },
-    { source: '黄宾虹', target: '沈一贯', type: 'art', age: 'elder', relation: '知己' },
-    { source: '黄宾虹', target: '顾宪成', type: 'art', age: 'elder', relation: '挚友' },
+    { source: '黄宾虹', target: '黄定华', relation: '父亲', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '方氏', relation: '母亲', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '洪四果', relation: '原配夫人', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '宋若婴', relation: '侧室', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄用明', relation: '长子', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄映宇', relation: '次子', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄鑑', relation: '三子', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄映家', relation: '女儿', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄乃耐', relation: '妹妹', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄恒华', relation: '四叔', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄元秀', relation: '弟弟', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄映绮', relation: '堂妹', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄昂青', relation: '侄子', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄警吾', relation: '侄子', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄映芬', relation: '侄女', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄宾日', relation: '侄孙', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄高志', relation: '侄孙', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '江钟羲', relation: '侄女婿', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '赵志钧', relation: '女婿', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄高勤', relation: '孙女', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '黄努卫', relation: '外孙', type: 'family', age: 'elder' },
+    { source: '黄宾虹', target: '李灼先', relation: '启蒙老师', type: 'art', age: 'childhood' },
+    { source: '黄宾虹', target: '李咏棠', relation: '启蒙老师', type: 'art', age: 'childhood' },
+    { source: '黄宾虹', target: '程建', relation: '四书五经老师', type: 'art', age: 'childhood' },
+    { source: '黄宾虹', target: '赵经田', relation: '四书五经老师', type: 'art', age: 'childhood' },
+    { source: '黄宾虹', target: '应芹生', relation: '四书五经老师', type: 'art', age: 'childhood' },
+    {
+      source: '黄宾虹',
+      target: '董其昌',
+      relation: '儿时喜爱的作者',
+      type: 'art',
+      age: 'childhood',
+    },
+    {
+      source: '黄宾虹',
+      target: '查士标',
+      relation: '儿时喜爱的作者',
+      type: 'art',
+      age: 'childhood',
+    },
+    { source: '黄宾虹', target: '陈春帆', relation: '写真老师', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '汪仲伊', relation: '国学老师', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '郑雪珊', relation: '山水老师', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '陈崇光', relation: '花鸟老师', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '程桓生', relation: '同事', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '赵穆', relation: '篆刻先生', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '许崇贵', relation: '知县', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '黄牧甫', relation: '好友', type: 'art', age: 'youth' },
+    { source: '黄宾虹', target: '郑搢书', relation: '作垦同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '许承尧', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '江炜', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '陈去病', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '江律本', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '黄节', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '邓实', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '沈曾植', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '冯煦', relation: '革命同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '蔡守', relation: '书画之交兼同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '王一亭', relation: '书画之交兼同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '柳亚子', relation: '书画之交兼同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '高天梅', relation: '书画之交兼同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '潘飞声', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '吴昌硕', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '徐积余', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '周梦坡', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '徐仲可', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '胡朴庵', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '童心安', relation: '杏花楼共雅集', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '王云五', relation: '同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '李叔同', relation: '同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '邹安', relation: '同事', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '王国维', relation: '金石之交', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '曾熙', relation: '论艺朋友', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '罗振玉', relation: '好友', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '张虹', relation: '以画会友', type: 'art', age: 'adult' },
+    { source: '黄宾虹', target: '王秋湄', relation: '研究同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '高剑父', relation: '研究同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '陈树人', relation: '研究同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '蔡哲夫', relation: '研究同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '邓尔雅', relation: '造访之交', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '张小楼', relation: '展览会同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '钱化佛', relation: '展览会同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '陈巨来', relation: '同事好友', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '汪声友', relation: '补习所同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '徐悲鸿', relation: '提携恩师', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '陶冷月', relation: '好友', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '田边华', relation: '东游之交', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '叶恭绰', relation: '同事', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '赵含英', relation: '学生', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '顾飞', relation: '学生', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '朱砚', relation: '学生', type: 'art', age: 'middle' },
+    { source: '黄宾虹', target: '虞澹涵', relation: '助赈同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '唐冠玉', relation: '助赈同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '张大千', relation: '白马湖之交', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '经亨颐', relation: '白马湖之交', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '方旭', relation: '腴霜柑阁共雅集', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '龚道耕', relation: '腴霜柑阁共雅集', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '贺天健', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '谢海燕', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '谢公展', relation: '游会之交', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '王济远', relation: '游会之交', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '何香凝', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '蔡元培', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '夏剑丞', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '孙海波', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '罗复堪', relation: '同事', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '郭味蕖', relation: '学生', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '傅雷', relation: '画展共事好友', type: 'art', age: 'elder' },
+    { source: '黄宾虹', target: '裘柱常夫妇', relation: '画展共事好友', type: 'art', age: 'elder' },
   ],
 }
 
@@ -98,8 +268,8 @@ const originalData = {
 
 const initGraph = () => {
   const filteredData = getFilteredData()
-  const width = 800
-  const height = 800
+  const width = 1000
+  const height = 1000
 
   d3.select('#relationship-graph svg').remove()
 
@@ -255,10 +425,25 @@ const toggleFilter = (filterId) => {
   filters.value.forEach((filter) => {
     filter.active = filter.id === filterId
   })
+
+  // 如果选择了“全部”或“家族”按钮，取消所有年龄按钮的激活状态
+  if (filterId === 'all' || filterId === 'family') {
+    ageFilters.value.forEach((filter) => {
+      filter.active = false
+    })
+  }
+
   initGraph() // 重新渲染图表
 }
 
 const toggleAgeFilter = (filterId) => {
+  const activeFilter = filters.value.find((f) => f.active)
+
+  // 如果当前选择的是“全部”或“家族”分类，则禁用年龄筛选
+  if (activeFilter.id === 'all' || activeFilter.id === 'family') {
+    return
+  }
+
   const filter = ageFilters.value.find((f) => f.id === filterId)
   if (filter.active) {
     // 如果当前按钮已经是激活状态，则取消激活
@@ -269,7 +454,7 @@ const toggleAgeFilter = (filterId) => {
       f.active = f.id === filterId
     })
   }
-  initGraph()
+  initGraph() // 重新渲染图表
 }
 
 onMounted(() => {
@@ -287,6 +472,7 @@ onMounted(() => {
 
 .main-content {
   position: relative;
+  margin-top: 10px;
 }
 
 .category-filters {
@@ -320,8 +506,8 @@ onMounted(() => {
 }
 
 #relationship-graph {
-  width: 800px;
-  height: 800px;
+  width: 1000px;
+  height: 1000px;
   margin: 0 auto;
   background-color: white;
   border-radius: 8px;
