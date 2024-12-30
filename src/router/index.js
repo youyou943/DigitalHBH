@@ -15,9 +15,9 @@ const router = createRouter({
             component: works,//作品页面
         },
         {
-            path: '/works/detial',
+            path: '/works/detial/:workname',  // 动态参数 :workname
             name: 'detial',
-            component: () => import('../views/workModule/workDetial.vue'),//作品详情页面
+            component: () => import('../views/workModule/workDetial.vue'), // 作品详情页面
         },
         {
             path: '/life',
