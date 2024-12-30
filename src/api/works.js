@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 创建axios实例
 const workApi = axios.create({
-    baseURL: 'http://192.168.43.69:8080/api/v1/works',
+    baseURL: 'http://192.168.1.107:8080/api/v1/works',
     timeout: 5000
 })
 

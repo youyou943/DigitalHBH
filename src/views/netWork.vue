@@ -468,11 +468,12 @@ onMounted(() => {
   padding: 20px;
   background-color: #f5f2eb;
   position: relative;
+  margin-top:80px;
 }
 
 .main-content {
   position: relative;
-  margin-top: 10px;
+  margin-top: 50px;
 }
 
 .category-filters {

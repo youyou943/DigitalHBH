@@ -100,9 +100,9 @@
         </p>-->
         <p v-html="eventDataother.event"></p>
         <p>&nbsp;</p>
-        <p style="text-align: center;" v-if="isImageLoaded">
+        <p style="text-align: center;" v-if="eventDataother.work">
          <!-- <img src="../static/avatar.png" alt="" width="500" height="465">-->
-          <img :src="eventDataother.work" alt="" width="500" height="465" @error="handleImageError">
+          <img :src="eventDataother.work" alt="" width="500" height="465" >
         </p>
         <!--<p style="text-align: center;">《多宝塔碑》明拓本（局部），原碑现藏西安碑林</p>-->
         <p style="text-align: center;">{{ eventDataother.workname }}</p>
@@ -1192,6 +1192,7 @@ export default {
   mounted() {
      this.fetch_other_event_titles();
     this.dialogVisible2 = false;
+    this.isImageLoaded = true;
     // 页面加载时检查是否有年份数据，如果有，则显示对话框
     if (this.$route.query.year) {
       this.selectedYear = this.$route.query.year;
@@ -1349,7 +1350,7 @@ text-align: center;
   font-weight: bold;
    /*border: 2px solid #333;*/
   border-radius: 5px; /* 设置圆角，如果需要方角可以删除此行 */
-  margin:0px; 
+  margin-right:1px; 
 }
 .grid-item2 {
   background-color:#AFB4AD;
